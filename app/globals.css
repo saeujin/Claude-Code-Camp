@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: ui-sans-serif, system-ui, "Apple SD Gothic Neo", "Malgun Gothic",
+    "Noto Sans KR", sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* 숫자를 표에서 세로로 맞추기 위해 등폭 숫자를 쓴다 */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}

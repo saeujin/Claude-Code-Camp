@@ -29,3 +29,23 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# 테스트 커버리지
+coverage/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# 배포
+.vercel
+
+# 인증서 / 패키지 매니저 부산물
+*.pem
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
