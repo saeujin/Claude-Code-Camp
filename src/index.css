@@ -1,0 +1,77 @@
+/* 전역 토큰 — 라이트/다크 자동 대응 */
+
+:root {
+  --bg: #ffffff;
+  --surface: #f6f7f9;
+  --surface-hover: #eceef1;
+  --border: #e2e5ea;
+  --track: #e2e5ea;
+  --text: #1a1d21;
+  --text-muted: #6b7280;
+  --accent: #2563eb;
+  --accent-fg: #ffffff;
+  --danger: #dc2626;
+  --warn-bg: #fef3c7;
+  --warn-fg: #92400e;
+
+  color-scheme: light dark;
+  font-family: system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #16181c;
+    --surface: #1f2228;
+    --surface-hover: #282c34;
+    --border: #303540;
+    --track: #303540;
+    --text: #e8eaed;
+    --text-muted: #9aa2ae;
+    --accent: #60a5fa;
+    --accent-fg: #16181c;
+    --danger: #f87171;
+    --warn-bg: #422c0a;
+    --warn-fg: #fcd34d;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+h1,
+h2 {
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+}
+
+/* 숫자 입력의 스피너는 좁은 폭에서 방해가 된다 */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type='number'] {
+  appearance: textfield;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}

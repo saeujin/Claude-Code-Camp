@@ -29,3 +29,10 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Vite
+dist-ssr/
+*.local
+
+# 테스트 커버리지
+coverage/
