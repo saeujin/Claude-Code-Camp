@@ -9,6 +9,7 @@ dist/
 build/
 .next/
 out/
+*.tsbuildinfo
 
 # 환경 변수 / 비밀값
 .env

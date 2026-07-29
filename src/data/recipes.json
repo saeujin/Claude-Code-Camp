@@ -1,0 +1,466 @@
+[
+  {
+    "id": "tofu-egg-steam",
+    "name": "두부 계란찜",
+    "kcal": 210,
+    "ingredients": [
+      { "name": "두부", "pantry": false },
+      { "name": "계란", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "소금", "pantry": true },
+      { "name": "참기름", "pantry": true }
+    ],
+    "steps": [
+      "두부를 으깨고 물기를 살짝 뺀다.",
+      "계란을 풀어 두부와 섞고 소금으로 간한다.",
+      "대파를 송송 썰어 넣는다.",
+      "중약불에서 뚜껑을 덮고 10분간 찐다.",
+      "참기름을 한 바퀴 두르고 마무리한다."
+    ]
+  },
+  {
+    "id": "chicken-stirfry",
+    "name": "닭가슴살 볶음",
+    "kcal": 320,
+    "ingredients": [
+      { "name": "닭가슴살", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "파프리카", "pantry": false },
+      { "name": "식용유", "pantry": true },
+      { "name": "간장", "pantry": true },
+      { "name": "후추", "pantry": true }
+    ],
+    "steps": [
+      "닭가슴살을 한입 크기로 썬다.",
+      "달군 팬에 식용유를 두르고 대파를 볶아 향을 낸다.",
+      "닭가슴살을 넣고 겉면이 익을 때까지 볶는다.",
+      "양파와 파프리카를 넣고 간장·후추로 간한다.",
+      "채소의 숨이 죽으면 불을 끈다."
+    ]
+  },
+  {
+    "id": "egg-fried-rice",
+    "name": "계란볶음밥",
+    "kcal": 480,
+    "ingredients": [
+      { "name": "계란", "pantry": false },
+      { "name": "밥", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "당근", "pantry": false },
+      { "name": "식용유", "pantry": true },
+      { "name": "소금", "pantry": true }
+    ],
+    "steps": [
+      "양파·당근·대파를 잘게 썬다.",
+      "팬에 식용유를 두르고 계란을 스크램블해 덜어둔다.",
+      "같은 팬에 채소를 볶는다.",
+      "밥을 넣고 눌러가며 볶는다.",
+      "계란을 다시 넣고 소금으로 간해 섞는다."
+    ]
+  },
+  {
+    "id": "kimchi-fried-rice",
+    "name": "김치볶음밥",
+    "kcal": 520,
+    "ingredients": [
+      { "name": "김치", "pantry": false },
+      { "name": "밥", "pantry": false },
+      { "name": "계란", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "식용유", "pantry": true },
+      { "name": "참기름", "pantry": true }
+    ],
+    "steps": [
+      "김치를 잘게 썰어 식용유에 볶는다.",
+      "대파를 넣고 함께 볶는다.",
+      "밥을 넣고 김치 국물과 함께 비벼가며 볶는다.",
+      "참기름을 두르고 계란 프라이를 올린다."
+    ]
+  },
+  {
+    "id": "doenjang-jjigae",
+    "name": "된장찌개",
+    "kcal": 220,
+    "ingredients": [
+      { "name": "두부", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "애호박", "pantry": false },
+      { "name": "감자", "pantry": false },
+      { "name": "된장", "pantry": true },
+      { "name": "다진마늘", "pantry": true }
+    ],
+    "steps": [
+      "냄비에 물을 끓이고 된장을 푼다.",
+      "감자와 양파를 넣고 5분간 끓인다.",
+      "애호박과 두부를 넣는다.",
+      "다진마늘을 넣고 3분 더 끓인다."
+    ]
+  },
+  {
+    "id": "sundubu-jjigae",
+    "name": "순두부찌개",
+    "kcal": 260,
+    "ingredients": [
+      { "name": "순두부", "pantry": false },
+      { "name": "계란", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "고춧가루", "pantry": true },
+      { "name": "다진마늘", "pantry": true }
+    ],
+    "steps": [
+      "냄비에 고춧가루와 다진마늘을 볶아 기름을 낸다.",
+      "물을 붓고 양파를 넣어 끓인다.",
+      "순두부를 큼직하게 떠 넣는다.",
+      "계란을 깨 넣고 대파를 올려 마무리한다."
+    ]
+  },
+  {
+    "id": "egg-roll",
+    "name": "계란말이",
+    "kcal": 240,
+    "ingredients": [
+      { "name": "계란", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "당근", "pantry": false },
+      { "name": "소금", "pantry": true },
+      { "name": "식용유", "pantry": true }
+    ],
+    "steps": [
+      "계란을 풀고 소금으로 간한다.",
+      "대파와 당근을 잘게 썰어 섞는다.",
+      "약불 팬에 얇게 부어 조금씩 말아준다.",
+      "한 김 식힌 뒤 썬다."
+    ]
+  },
+  {
+    "id": "tofu-braised",
+    "name": "두부조림",
+    "kcal": 250,
+    "ingredients": [
+      { "name": "두부", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "간장", "pantry": true },
+      { "name": "고춧가루", "pantry": true },
+      { "name": "식용유", "pantry": true }
+    ],
+    "steps": [
+      "두부를 도톰하게 썰어 노릇하게 굽는다.",
+      "양념장(간장·고춧가루·물)을 만든다.",
+      "구운 두부에 양념장을 붓고 양파를 넣는다.",
+      "국물이 자작해질 때까지 조리고 대파를 올린다."
+    ]
+  },
+  {
+    "id": "onion-pickle",
+    "name": "양파장아찌",
+    "kcal": 90,
+    "ingredients": [
+      { "name": "양파", "pantry": false },
+      { "name": "간장", "pantry": true },
+      { "name": "식초", "pantry": true },
+      { "name": "설탕", "pantry": true }
+    ],
+    "steps": [
+      "양파를 한입 크기로 썬다.",
+      "간장·식초·설탕·물을 1:1:1:2로 끓인다.",
+      "뜨거운 절임물을 양파에 붓는다.",
+      "하루 뒤부터 먹는다."
+    ]
+  },
+  {
+    "id": "chicken-salad",
+    "name": "닭가슴살 샐러드",
+    "kcal": 520,
+    "ingredients": [
+      { "name": "닭가슴살", "pantry": false },
+      { "name": "양상추", "pantry": false },
+      { "name": "방울토마토", "pantry": false },
+      { "name": "오이", "pantry": false },
+      { "name": "올리브유", "pantry": true },
+      { "name": "소금", "pantry": true }
+    ],
+    "steps": [
+      "닭가슴살을 삶거나 구워 결대로 찢는다.",
+      "양상추·오이·방울토마토를 씻어 먹기 좋게 썬다.",
+      "그릇에 담고 올리브유와 소금을 뿌린다."
+    ]
+  },
+  {
+    "id": "cucumber-salad",
+    "name": "오이무침",
+    "kcal": 60,
+    "ingredients": [
+      { "name": "오이", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "고춧가루", "pantry": true },
+      { "name": "식초", "pantry": true },
+      { "name": "소금", "pantry": true }
+    ],
+    "steps": [
+      "오이를 어슷 썰어 소금에 5분 절인다.",
+      "물기를 짜고 고춧가루·식초로 무친다.",
+      "대파를 송송 썰어 섞는다."
+    ]
+  },
+  {
+    "id": "potato-braised",
+    "name": "감자조림",
+    "kcal": 280,
+    "ingredients": [
+      { "name": "감자", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "당근", "pantry": false },
+      { "name": "간장", "pantry": true },
+      { "name": "설탕", "pantry": true },
+      { "name": "식용유", "pantry": true }
+    ],
+    "steps": [
+      "감자와 당근을 깍둑 썬다.",
+      "팬에 식용유를 두르고 감자를 볶는다.",
+      "물과 간장·설탕을 넣고 조린다.",
+      "양파를 넣고 국물이 졸아들 때까지 끓인다."
+    ]
+  },
+  {
+    "id": "zucchini-stirfry",
+    "name": "애호박볶음",
+    "kcal": 110,
+    "ingredients": [
+      { "name": "애호박", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "식용유", "pantry": true },
+      { "name": "소금", "pantry": true },
+      { "name": "다진마늘", "pantry": true }
+    ],
+    "steps": [
+      "애호박을 반달 썰고 양파는 채 썬다.",
+      "팬에 식용유와 다진마늘을 볶는다.",
+      "애호박과 양파를 넣고 소금으로 간해 볶는다."
+    ]
+  },
+  {
+    "id": "bean-sprout-salad",
+    "name": "콩나물무침",
+    "kcal": 80,
+    "ingredients": [
+      { "name": "콩나물", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "참기름", "pantry": true },
+      { "name": "소금", "pantry": true }
+    ],
+    "steps": [
+      "콩나물을 끓는 물에 3분간 데친다.",
+      "찬물에 헹궈 물기를 뺀다.",
+      "대파·참기름·소금으로 무친다."
+    ]
+  },
+  {
+    "id": "miyeokguk",
+    "name": "미역국",
+    "kcal": 150,
+    "ingredients": [
+      { "name": "미역", "pantry": false },
+      { "name": "소고기", "pantry": false },
+      { "name": "국간장", "pantry": true },
+      { "name": "참기름", "pantry": true },
+      { "name": "다진마늘", "pantry": true }
+    ],
+    "steps": [
+      "미역을 물에 20분 불린다.",
+      "냄비에 참기름을 두르고 소고기를 볶는다.",
+      "미역을 넣고 함께 볶는다.",
+      "물을 붓고 20분간 끓인 뒤 국간장으로 간한다."
+    ]
+  },
+  {
+    "id": "kimchi-jjigae",
+    "name": "김치찌개",
+    "kcal": 380,
+    "ingredients": [
+      { "name": "김치", "pantry": false },
+      { "name": "돼지고기", "pantry": false },
+      { "name": "두부", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "고춧가루", "pantry": true },
+      { "name": "다진마늘", "pantry": true }
+    ],
+    "steps": [
+      "돼지고기를 볶다가 김치를 넣고 함께 볶는다.",
+      "물을 붓고 15분간 끓인다.",
+      "두부와 대파를 넣는다.",
+      "고춧가루와 다진마늘로 간을 맞춘다."
+    ]
+  },
+  {
+    "id": "jeyuk",
+    "name": "제육볶음",
+    "kcal": 520,
+    "ingredients": [
+      { "name": "돼지고기", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "당근", "pantry": false },
+      { "name": "고추장", "pantry": true },
+      { "name": "간장", "pantry": true },
+      { "name": "설탕", "pantry": true }
+    ],
+    "steps": [
+      "고추장·간장·설탕으로 양념장을 만든다.",
+      "돼지고기를 양념에 20분 재운다.",
+      "센 불에 고기를 볶는다.",
+      "양파·당근·대파를 넣고 마저 볶는다."
+    ]
+  },
+  {
+    "id": "bulgogi",
+    "name": "불고기",
+    "kcal": 480,
+    "ingredients": [
+      { "name": "소고기", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "표고버섯", "pantry": false },
+      { "name": "간장", "pantry": true },
+      { "name": "설탕", "pantry": true },
+      { "name": "참기름", "pantry": true }
+    ],
+    "steps": [
+      "간장·설탕·참기름으로 양념을 만든다.",
+      "소고기를 30분 재운다.",
+      "팬에 고기를 볶다가 채소를 넣는다.",
+      "국물이 살짝 남을 때까지 익힌다."
+    ]
+  },
+  {
+    "id": "dakbokkeumtang",
+    "name": "닭볶음탕",
+    "kcal": 620,
+    "ingredients": [
+      { "name": "닭고기", "pantry": false },
+      { "name": "감자", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "당근", "pantry": false },
+      { "name": "고춧가루", "pantry": true },
+      { "name": "간장", "pantry": true }
+    ],
+    "steps": [
+      "닭고기를 데쳐 기름기를 뺀다.",
+      "양념(고춧가루·간장·물)과 함께 끓인다.",
+      "감자와 당근을 넣고 20분 조린다.",
+      "양파를 넣고 5분 더 끓인다."
+    ]
+  },
+  {
+    "id": "tomato-egg",
+    "name": "토마토 계란볶음",
+    "kcal": 260,
+    "ingredients": [
+      { "name": "토마토", "pantry": false },
+      { "name": "계란", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "소금", "pantry": true },
+      { "name": "식용유", "pantry": true }
+    ],
+    "steps": [
+      "계란을 풀어 반숙으로 볶아 덜어둔다.",
+      "토마토를 큼직하게 썰어 볶는다.",
+      "즙이 나오면 계란을 넣고 섞는다.",
+      "소금으로 간하고 대파를 올린다."
+    ]
+  },
+  {
+    "id": "tuna-mayo-rice",
+    "name": "참치마요덮밥",
+    "kcal": 620,
+    "ingredients": [
+      { "name": "참치캔", "pantry": false },
+      { "name": "밥", "pantry": false },
+      { "name": "계란", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "마요네즈", "pantry": true },
+      { "name": "간장", "pantry": true }
+    ],
+    "steps": [
+      "참치캔의 기름을 뺀다.",
+      "양파를 다져 참치·마요네즈와 섞는다.",
+      "밥 위에 올리고 계란 프라이를 얹는다.",
+      "간장을 살짝 뿌린다."
+    ]
+  },
+  {
+    "id": "broccoli-tofu",
+    "name": "브로콜리 두부무침",
+    "kcal": 180,
+    "ingredients": [
+      { "name": "브로콜리", "pantry": false },
+      { "name": "두부", "pantry": false },
+      { "name": "참기름", "pantry": true },
+      { "name": "소금", "pantry": true }
+    ],
+    "steps": [
+      "브로콜리를 데쳐 찬물에 헹군다.",
+      "두부를 데쳐 물기를 짜고 으깬다.",
+      "참기름·소금으로 함께 무친다."
+    ]
+  },
+  {
+    "id": "shrimp-fried-rice",
+    "name": "새우볶음밥",
+    "kcal": 540,
+    "ingredients": [
+      { "name": "새우", "pantry": false },
+      { "name": "밥", "pantry": false },
+      { "name": "계란", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "식용유", "pantry": true },
+      { "name": "소금", "pantry": true }
+    ],
+    "steps": [
+      "새우를 손질해 볶아 덜어둔다.",
+      "계란을 스크램블한다.",
+      "양파와 대파를 볶고 밥을 넣는다.",
+      "새우와 계란을 다시 넣고 소금으로 간한다."
+    ]
+  },
+  {
+    "id": "mushroom-hotpot",
+    "name": "버섯전골",
+    "kcal": 230,
+    "ingredients": [
+      { "name": "표고버섯", "pantry": false },
+      { "name": "팽이버섯", "pantry": false },
+      { "name": "두부", "pantry": false },
+      { "name": "대파", "pantry": false },
+      { "name": "국간장", "pantry": true },
+      { "name": "다진마늘", "pantry": true }
+    ],
+    "steps": [
+      "냄비에 버섯과 두부를 돌려 담는다.",
+      "물을 붓고 국간장·다진마늘로 간한다.",
+      "끓으면 대파를 올려 마무리한다."
+    ]
+  },
+  {
+    "id": "salmon-steak",
+    "name": "연어 스테이크",
+    "kcal": 380,
+    "ingredients": [
+      { "name": "연어", "pantry": false },
+      { "name": "브로콜리", "pantry": false },
+      { "name": "양파", "pantry": false },
+      { "name": "올리브유", "pantry": true },
+      { "name": "소금", "pantry": true },
+      { "name": "후추", "pantry": true }
+    ],
+    "steps": [
+      "연어에 소금·후추를 뿌려 10분 둔다.",
+      "달군 팬에 올리브유를 두르고 껍질 쪽부터 굽는다.",
+      "브로콜리와 양파를 곁들여 함께 굽는다."
+    ]
+  }
+]

@@ -1,0 +1,46 @@
+@import 'tailwindcss';
+
+/* 디자인 토큰 — .claude/skills/app-shell/SKILL.md
+   붉은 경고색을 쓰지 않는다. 목표 초과를 경고처럼 보이게 하면
+   사용자가 기록을 회피한다 (명세 398행). */
+@theme {
+  --color-bg: #fafaf9;
+  --color-card: #ffffff;
+  --color-ink: #1c1917;
+  --color-sub: #78716c;
+  --color-line: #e7e5e4;
+  --color-accent: #16a34a;
+  --color-accent-soft: #dcfce7;
+  --color-info: #0ea5e9;
+  --color-info-soft: #e0f2fe;
+  --color-caution: #d97706;
+  --color-caution-soft: #fef3c7;
+
+  --radius-card: 12px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family:
+    'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 숫자가 자리마다 흔들리지 않게 */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+input,
+select,
+button,
+textarea {
+  font: inherit;
+}
