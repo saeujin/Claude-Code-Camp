@@ -36,6 +36,31 @@ export function shiftDateKey(key: string, days: number): string {
   return toDateKey(date)
 }
 
+/** 형식이 맞는 날짜 키인지. 2026-02-31처럼 굴러가는 값도 걸러낸다 */
+export function isValidDateKey(key: string): boolean {
+  try {
+    return toDateKey(fromDateKey(key)) === key
+  } catch {
+    return false
+  }
+}
+
+/**
+ * `toKey − fromKey`의 일수. F1의 남은 기간 계산에 쓴다.
+ *
+ * 달력일 차이를 세야 하므로 UTC 자정으로 정규화한 뒤 뺀다. 로컬 시각으로 빼면
+ * 일광절약시간 경계에서 한 시간이 모자라 하루가 깎일 수 있다.
+ */
+export function daysBetweenKeys(fromKey: string, toKey: string): number {
+  const from = fromDateKey(fromKey)
+  const to = fromDateKey(toKey)
+
+  const fromUtc = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate())
+  const toUtc = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate())
+
+  return Math.round((toUtc - fromUtc) / 86_400_000)
+}
+
 /** '7월 29일 (수)' — 화면 헤더용 */
 export function formatDateLabel(key: string): string {
   const date = fromDateKey(key)

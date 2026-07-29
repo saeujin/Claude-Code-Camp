@@ -14,7 +14,8 @@ type Props = {
   total: Nutrition
   target: DailyTarget | null
   remaining: Nutrition | null
-  onOpenTargetDialog: () => void
+  /** 프로필 화면으로 이동. 목표가 없을 때만 쓰인다 */
+  onGoToProfile?: (() => void) | undefined
 }
 
 type MacroBarProps = {
@@ -49,7 +50,7 @@ function MacroBar({ label, consumed, target }: MacroBarProps) {
   )
 }
 
-export function DaySummaryBar({ total, target, remaining, onOpenTargetDialog }: Props) {
+export function DaySummaryBar({ total, target, remaining, onGoToProfile }: Props) {
   const isOver = remaining !== null && remaining.kcal < 0
 
   return (
@@ -65,9 +66,11 @@ export function DaySummaryBar({ total, target, remaining, onOpenTargetDialog }: 
         </div>
 
         {remaining === null ? (
-          <button type="button" className="ghost-button compact" onClick={onOpenTargetDialog}>
-            임시 목표 설정
-          </button>
+          onGoToProfile && (
+            <button type="button" className="ghost-button compact" onClick={onGoToProfile}>
+              목표 설정하기
+            </button>
+          )
         ) : (
           <div className={`summary-remaining${isOver ? ' over' : ''}`}>
             <span className="summary-caption">{isOver ? '초과' : '잔여'}</span>
@@ -81,7 +84,7 @@ export function DaySummaryBar({ total, target, remaining, onOpenTargetDialog }: 
 
       {remaining === null && (
         <p className="summary-notice">
-          목표 칼로리가 없어 잔여를 표시하지 못합니다. F1 프로필 설정이 들어오면 자동으로 계산됩니다.
+          프로필을 설정하면 목표 칼로리가 계산되어 잔여 칼로리가 표시됩니다.
         </p>
       )}
 
@@ -91,8 +94,8 @@ export function DaySummaryBar({ total, target, remaining, onOpenTargetDialog }: 
         <MacroBar label="지방" consumed={total.fat} target={target?.fat} />
       </div>
 
-      {target && (
-        <button type="button" className="text-button" onClick={onOpenTargetDialog}>
+      {target && onGoToProfile && (
+        <button type="button" className="text-button" onClick={onGoToProfile}>
           목표 수정
         </button>
       )}

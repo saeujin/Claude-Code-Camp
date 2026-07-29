@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import {
+  daysBetweenKeys,
   formatDateLabel,
   formatRelativeDateLabel,
   fromDateKey,
+  isValidDateKey,
   shiftDateKey,
   toDateKey,
 } from './date'
@@ -86,5 +88,54 @@ describe('formatRelativeDateLabel', () => {
 
   it('그 밖의 날짜는 날짜 그대로 보여준다', () => {
     expect(formatRelativeDateLabel('2026-07-27', today)).toBe('7월 27일 (월)')
+  })
+})
+
+describe('isValidDateKey', () => {
+  it('올바른 형식을 통과시킨다', () => {
+    expect(isValidDateKey('2026-07-29')).toBe(true)
+    expect(isValidDateKey('2028-02-29')).toBe(true) // 윤년
+  })
+
+  it('형식이 어긋나면 거부한다', () => {
+    expect(isValidDateKey('2026-7-29')).toBe(false)
+    expect(isValidDateKey('')).toBe(false)
+    expect(isValidDateKey('오늘')).toBe(false)
+  })
+
+  it('달력에 없는 날짜를 거부한다 — 3월로 굴러가지 않게', () => {
+    expect(isValidDateKey('2026-02-31')).toBe(false)
+    expect(isValidDateKey('2026-02-29')).toBe(false) // 평년
+    expect(isValidDateKey('2026-13-01')).toBe(false)
+  })
+})
+
+describe('daysBetweenKeys', () => {
+  it('두 날짜의 일수 차이를 센다', () => {
+    expect(daysBetweenKeys('2026-01-15', '2026-04-09')).toBe(84)
+  })
+
+  it('같은 날은 0이다', () => {
+    expect(daysBetweenKeys('2026-07-29', '2026-07-29')).toBe(0)
+  })
+
+  it('거꾸로면 음수다 — 기간이 지났는지 판단하는 근거', () => {
+    expect(daysBetweenKeys('2026-07-29', '2026-07-28')).toBe(-1)
+  })
+
+  it('연 경계를 넘어 센다', () => {
+    expect(daysBetweenKeys('2026-12-31', '2027-01-01')).toBe(1)
+  })
+
+  it('윤년의 2월을 포함해 센다', () => {
+    // 2028은 윤년이라 2월이 29일
+    expect(daysBetweenKeys('2028-02-01', '2028-03-01')).toBe(29)
+    expect(daysBetweenKeys('2026-02-01', '2026-03-01')).toBe(28)
+  })
+
+  it('shiftDateKey와 왕복이 맞는다', () => {
+    const start = '2026-01-15'
+    const end = shiftDateKey(start, 84)
+    expect(daysBetweenKeys(start, end)).toBe(84)
   })
 })

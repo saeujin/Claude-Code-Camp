@@ -1,0 +1,300 @@
+/* F1 프로필 및 목표 설정 — diet.css의 토큰과 공용 클래스를 그대로 쓴다 */
+
+.profile-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-header {
+  padding-top: 20px;
+}
+
+.profile-header h1 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.profile-header p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-group legend {
+  padding: 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* --- 선택 버튼 (성별 · 식단 목표) ------------------------------------- */
+
+.choice-row {
+  display: flex;
+  gap: 8px;
+}
+
+.choice {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.choice.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-weight: 600;
+}
+
+/* --- 활동 수준 -------------------------------------------------------- */
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.activity {
+  padding: 11px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: inherit;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.activity.active {
+  border-color: var(--accent);
+  box-shadow: inset 3px 0 0 var(--accent);
+  font-weight: 600;
+}
+
+/* --- 신체 정보 3열 ---------------------------------------------------- */
+
+.body-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* --- 목표 기간 -------------------------------------------------------- */
+
+.goal-period {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.goal-period-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.saved-notice {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--surface);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--accent);
+}
+
+/* --- 계산 결과 -------------------------------------------------------- */
+
+.breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.breakdown h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.breakdown h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* 단계별 노출 — 사용자가 근거를 이해할 수 있어야 한다 (명세 183줄) */
+.calc-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calc-steps li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--border);
+}
+
+.calc-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.calc-label em {
+  margin-left: 5px;
+  font-size: 11px;
+  font-style: normal;
+  opacity: 0.75;
+}
+
+.calc-value {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.target-headline {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.target-headline strong {
+  font-size: 30px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.target-headline .unit {
+  margin-left: 4px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.target-sub {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.goal-facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px;
+}
+
+.goal-facts dt {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.goal-facts dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.macro-target-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.macro-target-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.macro-target-row span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.macro-target-row strong {
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- 안내 문구 — 값을 바꾸지 않고 사실만 알린다 ----------------------- */
+
+.notice-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.notice {
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.notice.warn {
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+.notice.info {
+  background: var(--bg);
+  color: var(--text-muted);
+}
+
+.form-hint.center {
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* FieldGroup의 라벨 — <label>이 아니라 평범한 텍스트다 (Field.tsx 참고) */
+.field-label-text {
+  font-size: 13px;
+  color: var(--text-muted);
+}

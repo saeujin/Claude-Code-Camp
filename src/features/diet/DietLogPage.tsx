@@ -5,7 +5,7 @@
  * `initial`이 있으면 수정 모드가 된다.
  */
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { Amount, MealEntry, MealSlot } from '../../domain/types'
 import { formatKcal } from '../../domain/nutrition'
 import { formatDateLabel, formatRelativeDateLabel, todayKey } from '../../domain/date'
@@ -13,13 +13,19 @@ import { useDietLog } from './useDietLog'
 import { SlotCard } from './SlotCard'
 import { FoodPickerSheet } from './FoodPickerSheet'
 import { DaySummaryBar } from './DaySummaryBar'
-import { TempTargetDialog } from './TempTargetDialog'
 import './diet.css'
 
 /** 열린 시트의 상태. `entry`가 있으면 수정, 없으면 새 기록 */
 type SheetState = { slot: MealSlot; entry?: MealEntry }
 
-export function DietLogPage() {
+type Props = {
+  /** 프로필 화면으로 이동. 목표가 없을 때 요약바가 안내와 함께 노출한다 */
+  onGoToProfile?: () => void
+  /** 화면에 들어올 때 목표를 다시 읽도록 부모가 넘기는 신호 */
+  targetVersion?: number
+}
+
+export function DietLogPage({ onGoToProfile, targetVersion }: Props) {
   const {
     repo,
     date,
@@ -33,11 +39,16 @@ export function DietLogPage() {
     updateEntry,
     deleteEntry,
     addCustomFood,
-    changeTarget,
+    refreshTarget,
   } = useDietLog()
 
   const [sheet, setSheet] = useState<SheetState | null>(null)
-  const [showTargetDialog, setShowTargetDialog] = useState(false)
+
+  // 프로필을 저장하고 돌아오면 목표를 다시 읽는다. 목표는 F1에서 파생되므로
+  // F2가 값을 직접 쓰는 경로는 없고, 다시 읽기만 하면 된다.
+  useEffect(() => {
+    refreshTarget()
+  }, [targetVersion, refreshTarget])
 
   const isToday = date === todayKey()
 
@@ -109,7 +120,7 @@ export function DietLogPage() {
         total={summary.total}
         target={target}
         remaining={remaining}
-        onOpenTargetDialog={() => setShowTargetDialog(true)}
+        onGoToProfile={onGoToProfile}
       />
 
       {sheet && (
@@ -123,16 +134,6 @@ export function DietLogPage() {
         />
       )}
 
-      {showTargetDialog && (
-        <TempTargetDialog
-          current={target}
-          onSave={(next) => {
-            changeTarget(next)
-            setShowTargetDialog(false)
-          }}
-          onClose={() => setShowTargetDialog(false)}
-        />
-      )}
     </div>
   )
 }

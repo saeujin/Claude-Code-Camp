@@ -12,7 +12,7 @@ import { remainingNutrition, summarizeDay } from '../../domain/nutrition'
 import { shiftDateKey, todayKey } from '../../domain/date'
 import { createLocalDietRepository, type CustomFoodDraft } from '../../data/repo'
 import { SEED_FOODS } from '../../data/foods'
-import { readDailyTarget, writeDailyTarget } from '../target/dailyTarget'
+import { readDailyTarget } from '../target/dailyTarget'
 
 export function useDietLog() {
   // 저장소는 한 번만 만든다. 재생성되면 localStorage를 다시 읽어 낭비다.
@@ -21,7 +21,8 @@ export function useDietLog() {
   const [date, setDate] = useState(todayKey)
   const [entries, setEntries] = useState<MealEntry[]>(() => repo.listEntries())
   const [customFoods, setCustomFoods] = useState(() => repo.listCustomFoods())
-  const [target, setTarget] = useState<DailyTarget | null>(readDailyTarget)
+  // F1 프로필에서 파생된다. 프로필이 없으면 null → 잔여 칼로리 미표시 (명세 226줄)
+  const [target, setTarget] = useState<DailyTarget | null>(() => readDailyTarget())
 
   const summary = useMemo(() => summarizeDay(entries, date), [entries, date])
   const remaining = useMemo(() => remainingNutrition(summary.total, target), [summary.total, target])
@@ -66,10 +67,11 @@ export function useDietLog() {
     [repo],
   )
 
-  const changeTarget = useCallback((next: DailyTarget | null) => {
-    writeDailyTarget(next)
-    setTarget(next)
-  }, [])
+  /**
+   * 프로필에서 목표를 다시 읽는다. F1 화면에서 프로필을 저장하고 돌아왔을 때
+   * 호출한다 — 목표가 F1에서 파생되므로 F2가 직접 목표를 쓰는 경로는 없다.
+   */
+  const refreshTarget = useCallback(() => setTarget(readDailyTarget()), [])
 
   const goToDate = useCallback((next: string) => setDate(next), [])
   const shiftDate = useCallback((days: number) => setDate((prev) => shiftDateKey(prev, days)), [])
@@ -87,6 +89,6 @@ export function useDietLog() {
     updateEntry,
     deleteEntry,
     addCustomFood,
-    changeTarget,
+    refreshTarget,
   }
 }
