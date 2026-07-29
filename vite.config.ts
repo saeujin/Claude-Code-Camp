@@ -4,7 +4,11 @@ import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  // GitHub Pages는 https://<user>.github.io/<repo>/ 하위에서 서비스하므로
+  // 빌드 산출물의 asset 경로에 저장소 이름을 깔아야 한다.
+  // dev·preview는 루트로 둔다 — 로컬에서 경로를 신경 쓸 이유가 없다.
+  base: command === 'build' ? '/Claude-Code-Camp/' : '/',
   plugins: [react()],
   test: {
     // 도메인 테스트는 DOM이 필요 없지만 컴포넌트 테스트가 있으므로 전역으로 켠다.
@@ -12,4 +16,4 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     restoreMocks: true,
   },
-})
+}))
