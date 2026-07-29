@@ -1,0 +1,288 @@
+/*
+ * F5 추천 화면.
+ *
+ * 버튼·빈 상태 클래스를 diet.css에서 재사용하지 않고 여기서 따로 정의한다.
+ * 번들에서는 모든 CSS가 한 파일로 합쳐지므로 빌려 쓰는 것도 동작하지만,
+ * 그러면 이 화면의 모양이 F2 화면의 CSS 로드 여부에 조용히 의존하게 된다.
+ */
+
+.suggest-page {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+}
+
+/* ── 헤더 ─────────────────────────────────────────────── */
+
+.suggest-header {
+  padding: 16px 0 12px;
+}
+
+.suggest-header h1 {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+.slot-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.slot-tab {
+  flex: 1;
+  padding: 9px 4px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.slot-tab.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-weight: 600;
+}
+
+/* 기록이 있는 끼니 표시. 활성 탭에서도 읽히도록 색을 물려받는다 */
+.slot-tab-logged {
+  margin-left: 3px;
+  font-weight: 700;
+}
+
+/* ── 배분 근거 ────────────────────────────────────────── */
+
+.suggest-budget {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.budget-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.budget-row + .budget-row {
+  border-top: 1px solid var(--border);
+}
+
+.budget-row.emphasis {
+  margin-top: 2px;
+  padding-top: 8px;
+}
+
+.budget-label {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* 배분식(잔여 ÷ 남은 3끼)은 근거일 뿐이므로 라벨보다 더 물러나게 둔다 */
+.budget-label small {
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+.budget-value {
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.budget-row.emphasis .budget-value {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/*
+ * 초과를 붉은 경고색으로 칠하지 않는다 — 목표를 넘긴 것을 경고처럼 보이게 하면
+ * 사용자가 기록을 회피한다 (명세 398줄).
+ */
+.budget-row.over .budget-value {
+  color: var(--warn-fg);
+}
+
+/* ── 안내 문구 ────────────────────────────────────────── */
+
+.suggest-notice {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+  font-size: 13px;
+}
+
+/* ── 추천 이유 ────────────────────────────────────────── */
+
+.suggest-reasons {
+  margin-top: 16px;
+}
+
+.suggest-reasons h2 {
+  margin: 0 0 6px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.suggest-reasons ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.suggest-reasons li {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ── 추천 목록 ────────────────────────────────────────── */
+
+.suggestion-list {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.suggestion-card {
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.suggestion-card + .suggestion-card {
+  margin-top: 8px;
+}
+
+.suggestion-card.top {
+  border-color: var(--accent);
+}
+
+.suggestion-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.suggestion-rank {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 22px;
+  text-align: center;
+}
+
+.suggestion-card.top .suggestion-rank {
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-weight: 600;
+}
+
+.suggestion-title {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.suggestion-name {
+  font-size: 15px;
+}
+
+.suggestion-servings {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* 1인분이 아니면 먹을 양을 오해할 수 있으므로 눈에 걸리게 한다 */
+.suggestion-servings.scaled {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.suggestion-kcal {
+  flex: none;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.suggestion-unit {
+  margin-left: 2px;
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.suggestion-macros {
+  display: flex;
+  gap: 14px;
+  margin: 8px 0 0 32px;
+}
+
+.suggestion-macros div {
+  display: flex;
+  gap: 4px;
+}
+
+.suggestion-macros dt {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.suggestion-macros dd {
+  margin: 0;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 빈 상태·꼬리말 ───────────────────────────────────── */
+
+.suggest-empty {
+  padding: 40px 0;
+  text-align: center;
+}
+
+.suggest-empty-text {
+  margin-top: 16px;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.suggest-primary {
+  margin-top: 16px;
+  padding: 11px 20px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.suggest-foot {
+  margin-top: 20px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
