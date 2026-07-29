@@ -1,0 +1,595 @@
+/* F2 하루 식단 기록 — 모바일 우선 단일 컬럼 */
+
+.diet-page {
+  max-width: 480px;
+  margin: 0 auto;
+  /* 하단 고정 요약바에 가려지지 않도록 여유를 둔다 */
+  padding: 0 16px 260px;
+}
+
+/* --- 날짜 헤더 -------------------------------------------------------- */
+
+.date-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 16px 0 12px;
+  background: var(--bg);
+}
+
+.date-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.3;
+}
+
+.date-title strong {
+  font-size: 18px;
+}
+
+.date-title span {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* --- 끼니 카드 -------------------------------------------------------- */
+
+.slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.slot-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.slot-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 12px 14px;
+}
+
+.slot-header h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.slot-subtotal {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.entry-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--border);
+}
+
+.entry-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.entry-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+}
+
+.entry-name {
+  font-size: 14px;
+}
+
+.entry-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.entry-kcal {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.add-button {
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background: var(--surface-hover);
+}
+
+.day-total-note {
+  margin: 4px 0 0;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- 하단 요약바 ------------------------------------------------------ */
+
+.summary-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.summary-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.summary-caption {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.summary-consumed strong,
+.summary-remaining strong {
+  font-size: 24px;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-target {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.summary-unit {
+  margin-left: 3px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.summary-remaining {
+  text-align: right;
+  color: var(--accent);
+}
+
+/* 목표를 초과해도 기록을 막지 않는다. 색으로만 알린다 (명세 225줄) */
+.summary-remaining.over {
+  color: var(--danger);
+}
+
+.summary-notice {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.macro-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.macro-bar {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+/* 목표 탄단지가 없으면 진행바 없이 라벨과 섭취량만 남는다 */
+.macro-bar.no-target {
+  grid-template-columns: 34px auto;
+}
+
+.macro-bar-label {
+  color: var(--text-muted);
+}
+
+.macro-bar-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.macro-bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+.macro-bar-fill.over {
+  background: var(--danger);
+}
+
+.macro-bar-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* --- 시트 / 모달 ------------------------------------------------------ */
+
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgb(0 0 0 / 45%);
+}
+
+.sheet {
+  width: 100%;
+  max-width: 480px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px 16px 0 0;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sheet-header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.sheet-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+/* --- 음식 목록 -------------------------------------------------------- */
+
+.food-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.food-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 11px 4px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.food-row:hover {
+  background: var(--surface-hover);
+}
+
+.food-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.food-kcal {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--track);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  padding: 24px 0;
+  text-align: center;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* --- 섭취량 입력 ------------------------------------------------------ */
+
+.selected-food {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.selected-food span {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.unit-toggle {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.unit-toggle button {
+  flex: 1;
+  padding: 9px;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.unit-toggle button.active {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+.unit-toggle button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.preview-kcal {
+  font-size: 30px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.preview-kcal span {
+  margin-left: 4px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.preview-macros {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- 폼 --------------------------------------------------------------- */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field > span {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.text-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+  font-size: 15px;
+}
+
+.text-input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.macro-fields {
+  margin: 0;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.macro-fields legend {
+  padding: 0 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.macro-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.form-hint,
+.form-warning {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.form-warning {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--warn-bg);
+  color: var(--warn-fg);
+}
+
+/* --- 버튼 ------------------------------------------------------------- */
+
+.primary-button {
+  padding: 13px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ghost-button {
+  padding: 11px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.ghost-button.compact {
+  padding: 7px 12px;
+  font-size: 13px;
+}
+
+.text-button {
+  align-self: center;
+  padding: 6px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.text-button.center {
+  display: block;
+  margin: 0 auto 8px;
+}
+
+.text-button.danger {
+  color: var(--danger);
+}
+
+.back-button {
+  align-self: flex-start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.icon-button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.icon-button:hover {
+  background: var(--surface-hover);
+}
+
+.icon-button.danger:hover {
+  color: var(--danger);
+}
