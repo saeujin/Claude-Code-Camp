@@ -1,0 +1,341 @@
+/* 식단앱 공용 스타일 — F3·F6 페이지 공유 */
+
+:root {
+  --bg: #f6f7f9;
+  --card: #ffffff;
+  --line: #e3e6ea;
+  --text: #1c2024;
+  --muted: #6b7480;
+  --accent: #2f6df6;
+  --accent-soft: #eaf1ff;
+  --up: #0f8a5f;
+  --up-soft: #e6f6ef;
+  --warn: #a4622a;
+  --warn-soft: #fdf1e5;
+  --neg: #c0392b;
+  --radius: 12px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14171a;
+    --card: #1d2126;
+    --line: #2e343b;
+    --text: #e7eaee;
+    --muted: #9aa4b0;
+    --accent: #6c9bff;
+    --accent-soft: #223250;
+    --up: #4cc38a;
+    --up-soft: #1b3a2c;
+    --warn: #e0a86a;
+    --warn-soft: #3a2d1d;
+    --neg: #ef6b5c;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.6 -apple-system, "Segoe UI", "Malgun Gothic", system-ui, sans-serif;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* ── 내비게이션 ────────────────────────────────────────────── */
+
+.topnav {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 12px 20px;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.topnav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+}
+.topnav a.active { color: var(--accent); font-weight: 600; }
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+}
+h1 { font-size: 22px; margin: 8px 0 20px; }
+h2 { font-size: 16px; margin: 0 0 12px; }
+h3 { font-size: 14px; margin: 20px 0 8px; color: var(--muted); }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 16px;
+}
+.card--muted { opacity: 0.75; }
+.count { color: var(--muted); font-weight: 400; }
+
+/* ── F3 요약 카드 ──────────────────────────────────────────── */
+
+.summary__label { margin: 0; color: var(--muted); font-size: 13px; }
+.summary__value { margin: 2px 0 6px; font-size: 34px; font-weight: 700; letter-spacing: -0.02em; }
+.summary__value .unit { font-size: 15px; font-weight: 400; color: var(--muted); }
+.summary__breakdown { margin: 0 0 10px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.summary__macros { margin: 10px 0 4px; font-variant-numeric: tabular-nums; }
+.summary__remaining { margin: 8px 0 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+.summary__remaining.negative { color: var(--neg); }
+
+.badge {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.badge--up { background: var(--up-soft); color: var(--up); }
+.badge--protein { background: var(--accent-soft); color: var(--accent); }
+
+.notice { margin: 12px 0 0; color: var(--muted); font-size: 13px; }
+.hint { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+
+.alert {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13.5px;
+}
+.alert--info { background: var(--accent-soft); color: var(--text); }
+.alert--warn { background: var(--warn-soft); color: var(--warn); }
+.alert--edit { background: var(--accent-soft); }
+
+/* ── 탭 · 폼 ───────────────────────────────────────────────── */
+
+.tabs { display: flex; gap: 6px; margin-bottom: 16px; }
+.tab {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+.tab.active { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.tab:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.panel { display: block; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+.row .field { flex: 1 1 120px; }
+
+.field { display: block; margin-bottom: 12px; }
+.field > span, .field > legend { display: block; margin-bottom: 4px; font-size: 13px; color: var(--muted); }
+.field input {
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+fieldset.field { border: none; padding: 0; margin: 0 0 12px; }
+.radio { display: inline-flex; align-items: center; gap: 6px; margin-right: 14px; font-size: 14px; }
+.radio input { width: auto; }
+
+.results { list-style: none; margin: 0 0 12px; padding: 0; max-height: 220px; overflow-y: auto; }
+.result {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.result:hover { background: var(--bg); }
+.result.selected { border-color: var(--accent); background: var(--accent-soft); }
+.result__name { flex: 1; }
+.result__met { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+
+.selected { margin: 0 0 10px; font-weight: 600; }
+.preview { margin: 4px 0 8px; color: var(--accent); font-variant-numeric: tabular-nums; }
+.preview strong { font-size: 18px; }
+
+.primary, .secondary {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+.primary { background: var(--accent); color: #fff; }
+.primary:disabled { opacity: 0.45; cursor: not-allowed; }
+.secondary { background: transparent; color: var(--accent); }
+.linkbtn {
+  border: none;
+  background: none;
+  padding: 0 4px;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.chip {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: var(--bg);
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+.chip--strength { color: var(--accent); border-color: var(--accent); }
+.chip--unverified { color: var(--warn); border-color: var(--warn); }
+
+/* ── F3 기록 목록 ──────────────────────────────────────────── */
+
+.loglist { list-style: none; margin: 0; padding: 0; }
+.logitem {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.logitem.editing { background: var(--accent-soft); }
+.logitem__time { color: var(--muted); font-size: 13px; }
+.logitem__name { flex: 1; min-width: 120px; font-weight: 500; }
+.logitem__dur, .logitem__cal { color: var(--muted); font-size: 13px; }
+.logtotal { margin: 12px 0 0; text-align: right; font-variant-numeric: tabular-nums; }
+.empty, .note { padding: 14px 0; color: var(--muted); font-size: 14px; list-style: none; }
+
+.snackbar {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: #23282e;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 0.25);
+}
+.snackbar .linkbtn { color: #8fb4ff; }
+
+/* ── F6 재료 칩 ────────────────────────────────────────────── */
+
+.chipbar { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 10px 0 0; padding: 0; }
+.ingchip {
+  padding: 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.ingchip.soon { border-color: var(--warn); }
+.ingchip.active { border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+
+.pinned { margin: 12px 0 0; font-size: 14px; }
+.toggle { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: 14px; }
+
+/* ── F6 결과 카드 ──────────────────────────────────────────── */
+
+.recipes { list-style: none; margin: 0; padding: 0; }
+.recipe {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.recipe:hover { border-color: var(--accent); }
+.recipe__head { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.recipe__name { flex: 1; font-weight: 600; }
+.recipe__kcal { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.recipe__reason { display: block; margin-bottom: 4px; font-size: 13px; color: var(--warn); }
+.recipe__reason--over { color: var(--muted); }
+.recipe__ings { display: block; font-size: 13px; color: var(--muted); }
+.recipe__ings--missing { color: var(--neg); }
+
+.matchbadge {
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid;
+}
+.match--full { color: var(--up); background: var(--up-soft); border-color: var(--up); }
+.match--high { color: var(--accent); background: var(--accent-soft); border-color: var(--accent); }
+.match--mid  { color: var(--warn); background: var(--warn-soft); border-color: var(--warn); }
+.match--low  { color: var(--muted); background: var(--bg); border-color: var(--line); }
+
+/* ── F6 상세 ───────────────────────────────────────────────── */
+
+.detail {
+  width: min(560px, 92vw);
+  max-height: 86vh;
+  overflow-y: auto;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--card);
+  color: var(--text);
+}
+.detail::backdrop { background: rgb(0 0 0 / 0.45); }
+.detail__head { position: relative; padding-right: 48px; }
+.detail__head h2 { font-size: 19px; margin-bottom: 4px; }
+.detail__meta { margin: 0; color: var(--muted); font-size: 13px; }
+.detail__close { position: absolute; top: 0; right: 0; }
+
+.ingtable { list-style: none; margin: 0; padding: 0; }
+.ingrow {
+  display: flex;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.ingrow > span:first-child { flex: 1; }
+.ingrow__tag { font-size: 12px; color: var(--muted); }
+.ingrow.lack > span:first-child { color: var(--neg); }
+.ingrow.staple { opacity: 0.55; }
+
+.steps { margin: 0; padding-left: 20px; }
+.steps li { margin-bottom: 6px; }
+
+.detail__foot { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px; }
+.detail__foot .notice { flex: 1 1 100%; margin: 0 0 8px; }

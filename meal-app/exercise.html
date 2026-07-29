@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>운동 기록 · 식단앱 F3</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <nav class="topnav">
+    <strong>식단앱</strong>
+    <a href="./exercise.html" class="active">운동 기록 (F3)</a>
+    <a href="./recipes.html">레시피 추천 (F6)</a>
+  </nav>
+
+  <main class="page">
+    <h1>운동 기록</h1>
+
+    <!-- ① 오늘 목표 요약 카드 -->
+    <section class="card summary" aria-labelledby="summary-h">
+      <h2 id="summary-h" class="sr-only">오늘 목표 요약</h2>
+      <p class="summary__label">오늘 목표</p>
+      <p class="summary__value"><span id="summary-today">–</span> <span class="unit">kcal</span></p>
+      <p class="summary__breakdown" id="summary-breakdown"></p>
+      <p class="badge badge--up" id="summary-exercise-badge" hidden></p>
+      <p class="summary__macros" id="summary-macros"></p>
+      <p class="badge badge--protein" id="summary-protein" hidden></p>
+      <p class="summary__remaining" id="summary-remaining"></p>
+      <p class="notice" id="estimate-notice"></p>
+    </section>
+
+    <!-- ② 운동 추가 -->
+    <section class="card" aria-labelledby="add-h">
+      <h2 id="add-h">운동 추가</h2>
+
+      <p class="alert alert--info" id="profile-block" hidden>
+        MET 자동 계산에는 체중이 필요해요. 프로필을 먼저 설정하면 운동만 골라도 칼로리가 계산돼요.
+        <a href="#" id="profile-link">[프로필 설정]</a>
+      </p>
+
+      <p class="alert alert--edit" id="edit-banner" hidden>
+        기록을 수정하고 있어요. <button type="button" class="linkbtn" id="edit-cancel">취소</button>
+      </p>
+
+      <div class="tabs" role="tablist">
+        <button type="button" role="tab" id="tab-catalog" class="tab active" aria-selected="true">운동 선택</button>
+        <button type="button" role="tab" id="tab-manual" class="tab" aria-selected="false">직접 입력</button>
+      </div>
+
+      <!-- 운동 선택 탭 -->
+      <form class="panel" id="panel-catalog" novalidate>
+        <label class="field">
+          <span>운동 검색</span>
+          <input type="search" id="ex-search" placeholder="조깅, 웨이트, 수영…" autocomplete="off" />
+        </label>
+
+        <ul class="results" id="ex-results"></ul>
+
+        <p class="selected" id="ex-selected" hidden></p>
+
+        <div class="row">
+          <label class="field">
+            <span>시간 (분)</span>
+            <input type="number" id="ex-duration" min="1" step="1" inputmode="numeric" placeholder="30" />
+          </label>
+          <label class="field">
+            <span>시각</span>
+            <input type="time" id="ex-time" />
+          </label>
+          <label class="field">
+            <span>날짜</span>
+            <input type="date" id="ex-date" />
+          </label>
+        </div>
+
+        <p class="preview" id="ex-preview">▸ 예상 소모 <strong>–</strong> kcal</p>
+        <p class="alert alert--warn" id="ex-warn-duration" hidden>10시간이 넘어요. 시간을 다시 확인해주세요.</p>
+        <p class="hint" id="ex-hint-walk" hidden>
+          출퇴근 도보처럼 매일 하는 활동은 이미 활동 수준에 반영돼 있어요. 따로 나가서 걸은 운동만 기록해주세요.
+        </p>
+        <p class="hint" id="ex-hint-unverified" hidden>이 운동의 MET 값은 검증 전이에요. 참고용으로 봐주세요.</p>
+
+        <button type="submit" class="primary" id="ex-submit" disabled>기록하기</button>
+      </form>
+
+      <!-- 직접 입력 탭 -->
+      <form class="panel" id="panel-manual" novalidate hidden>
+        <label class="field">
+          <span>운동 이름</span>
+          <input type="text" id="mn-name" placeholder="크로스핏 WOD" autocomplete="off" />
+        </label>
+
+        <div class="row">
+          <label class="field">
+            <span>소모 칼로리</span>
+            <input type="number" id="mn-cal" min="1" step="1" inputmode="numeric" placeholder="250" />
+          </label>
+          <label class="field">
+            <span>시간 (분, 선택)</span>
+            <input type="number" id="mn-duration" min="1" step="1" inputmode="numeric" placeholder="—" />
+          </label>
+        </div>
+
+        <fieldset class="field">
+          <legend>유형</legend>
+          <label class="radio"><input type="radio" name="mn-type" value="cardio" /> 유산소</label>
+          <label class="radio"><input type="radio" name="mn-type" value="strength" /> 근력</label>
+          <p class="hint" id="mn-type-msg">유형을 골라주세요. 근력운동은 단백질 목표에 반영돼요.</p>
+        </fieldset>
+
+        <div class="row">
+          <label class="field">
+            <span>시각</span>
+            <input type="time" id="mn-time" />
+          </label>
+          <label class="field">
+            <span>날짜</span>
+            <input type="date" id="mn-date" />
+          </label>
+        </div>
+
+        <button type="submit" class="primary" id="mn-submit" disabled>기록하기</button>
+      </form>
+    </section>
+
+    <!-- ③ 오늘의 운동 -->
+    <section class="card" aria-labelledby="list-h">
+      <h2 id="list-h">오늘의 운동</h2>
+      <p class="alert alert--warn" id="banner-suspicious" hidden></p>
+      <ul class="loglist" id="log-list"></ul>
+      <p class="logtotal">합계 <strong id="log-total">0</strong> kcal</p>
+    </section>
+
+    <!-- 설정 (선행 결정 #4: 웨어러블 연동 MVP 미탑재) -->
+    <section class="card card--muted">
+      <h2>설정</h2>
+      <label class="radio">
+        <input type="checkbox" disabled /> 웨어러블 · 건강앱에서 운동 자동 가져오기
+      </label>
+      <p class="hint">웨어러블 연동은 준비 중이에요.</p>
+    </section>
+  </main>
+
+  <div class="snackbar" id="snackbar" hidden>
+    <span id="snackbar-text"></span>
+    <button type="button" class="linkbtn" id="snackbar-undo">되돌리기</button>
+  </div>
+
+  <script type="module" src="./src/pages/exercise.js"></script>
+</body>
+</html>

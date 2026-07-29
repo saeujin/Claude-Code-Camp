@@ -1,0 +1,13 @@
+{
+  "name": "meal-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "식단앱 — F3 운동 기록 / F6 재료 기반 레시피 추천",
+  "scripts": {
+    "test": "node --test",
+    "test:f3": "node --test test/exercise.test.js",
+    "test:f6": "node --test test/recipe.test.js",
+    "serve": "npx --yes serve . -l 8000"
+  }
+}

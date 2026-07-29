@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>레시피 추천 · 식단앱 F6</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <nav class="topnav">
+    <strong>식단앱</strong>
+    <a href="./exercise.html">운동 기록 (F3)</a>
+    <a href="./recipes.html" class="active">레시피 추천 (F6)</a>
+  </nav>
+
+  <main class="page">
+    <h1>재료로 레시피 찾기</h1>
+
+    <!-- ① 조건 영역 -->
+    <section class="card" aria-labelledby="cond-h">
+      <h2 id="cond-h">보유 재료 <span class="count" id="ing-count"></span></h2>
+      <p class="hint">재료를 누르면 그 재료를 쓰는 요리만 골라 보여줘요.</p>
+      <ul class="chipbar" id="chip-bar"></ul>
+
+      <p class="pinned" id="pinned-row" hidden>
+        선택한 재료: <strong id="pinned-name"></strong>
+        <button type="button" class="linkbtn" id="pin-clear">해제</button>
+      </p>
+
+      <label class="toggle">
+        <input type="checkbox" id="cal-toggle" />
+        <span id="cal-toggle-label">오늘 남은 칼로리 안에서 찾기</span>
+      </label>
+      <p class="hint" id="cal-hint"></p>
+    </section>
+
+    <!-- ② 결과 리스트 -->
+    <section class="card" aria-labelledby="res-h">
+      <h2 id="res-h">추천 <span class="count" id="result-count"></span></h2>
+      <p class="alert alert--info" id="empty-state" hidden></p>
+      <ul class="recipes" id="results"></ul>
+    </section>
+  </main>
+
+  <!-- ③ 상세 -->
+  <dialog class="detail" id="detail">
+    <header class="detail__head">
+      <h2 id="detail-title"></h2>
+      <p class="detail__meta" id="detail-meta"></p>
+      <button type="button" class="linkbtn detail__close" id="detail-close">닫기</button>
+    </header>
+
+    <h3>재료</h3>
+    <ul class="ingtable" id="detail-ingredients"></ul>
+
+    <h3>조리법</h3>
+    <ol class="steps" id="detail-steps"></ol>
+
+    <footer class="detail__foot">
+      <p class="notice">레시피를 봤다고 재료가 줄지 않아요. 실제로 쓴 재료는 냉장고에서 지워주세요.</p>
+      <button type="button" class="secondary" id="detail-fridge">냉장고 관리로 이동</button>
+      <button type="button" class="primary" id="detail-log">이 요리 식단에 기록</button>
+    </footer>
+  </dialog>
+
+  <script type="module" src="./src/pages/recipes.js"></script>
+</body>
+</html>
