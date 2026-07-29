@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>프로필 및 목표 설정 · 식단앱</title>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --line: #e2e8f0;
+    --line-strong: #cbd5e1;
+    --text: #0f172a;
+    --muted: #64748b;
+    --faint: #94a3b8;
+    --accent: #0284c7;
+    --accent-weak: #f0f9ff;
+    --accent-line: #0ea5e9;
+    --warn-bg: #fffbeb;
+    --warn-line: #fcd34d;
+    --warn-text: #78350f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: ui-sans-serif, system-ui, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 24px 16px 64px; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+  .card h2 { font-size: 14px; font-weight: 600; color: #334155; margin: 0 0 12px; }
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  label.field { display: block; margin-bottom: 16px; }
+  label.field > span.lbl { font-size: 14px; color: #475569; }
+  .inputrow { display: flex; align-items: center; gap: 8px; margin-top: 4px; }
+  input[type=number], input[type=date] {
+    width: 100%; padding: 9px 12px; font-size: 16px;
+    border: 1px solid var(--line-strong); border-radius: 8px; background: #fff; color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  input:focus { outline: none; border-color: var(--accent-line); }
+  .unit { width: 32px; flex: none; font-size: 14px; color: var(--muted); }
+
+  fieldset { border: 0; padding: 0; margin: 0 0 16px; }
+  legend { font-size: 14px; font-weight: 600; color: #334155; padding: 0; }
+  .hint { font-size: 14px; color: #0369a1; margin: 4px 0 0; }
+  .hint-muted { font-size: 13px; color: var(--muted); margin: 4px 0 0; }
+
+  .segmented { display: grid; gap: 8px; margin-top: 8px; }
+  .seg2 { grid-template-columns: 1fr 1fr; }
+  .seg3 { grid-template-columns: repeat(3, 1fr); }
+  .segmented label {
+    text-align: center; padding: 9px 4px; font-size: 14px; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 8px; background: #fff; color: #334155;
+  }
+  .segmented input { position: absolute; opacity: 0; pointer-events: none; }
+  .segmented label.on { border-color: var(--accent-line); background: var(--accent-weak); color: #075985; }
+
+  .radios { margin-top: 12px; display: grid; gap: 8px; }
+  .radios label {
+    display: flex; gap: 12px; align-items: flex-start; cursor: pointer;
+    border: 1px solid var(--line); border-radius: 8px; padding: 12px; background: #fff;
+  }
+  .radios label.on { border-color: var(--accent-line); background: var(--accent-weak); }
+  .radios input { margin-top: 3px; accent-color: var(--accent); }
+  .radios .nm { font-size: 14px; display: block; }
+  .radios .fx { font-size: 12px; color: var(--faint); display: block; font-variant-numeric: tabular-nums; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 400px) { .grid2 { grid-template-columns: 1fr; } }
+
+  button.primary {
+    width: 100%; padding: 13px; font-size: 16px; font-weight: 600; color: #fff;
+    background: var(--accent); border: 0; border-radius: 12px; cursor: pointer;
+  }
+  button.primary:hover:enabled { background: #0369a1; }
+  button.primary:disabled { background: var(--line-strong); cursor: not-allowed; }
+
+  .err { color: #dc2626; font-size: 13px; margin: 4px 0 0; }
+  .center-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 8px; }
+
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 8px 0; }
+  .steps li + li { border-top: 1px dashed #eef2f7; }
+  .steps .k { font-size: 14px; color: #475569; }
+  .steps .k small { display: block; font-size: 12px; color: var(--faint); }
+  .steps .v { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .steps li.total { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 12px; }
+  .steps li.total .k { font-weight: 600; color: var(--text); }
+  .steps li.total .v { font-size: 26px; font-weight: 700; color: #0369a1; }
+
+  dl.kv { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 0; }
+  dl.kv dt { font-size: 13px; color: var(--muted); margin: 0; }
+  dl.kv dd { margin: 0; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .macro + .macro { margin-top: 12px; }
+  .macro .top { display: flex; justify-content: space-between; align-items: baseline; }
+  .macro .nm { font-size: 14px; color: #475569; }
+  .macro .g { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .macro .kc { font-size: 12px; color: var(--faint); margin-left: 6px; font-weight: 400; }
+  .bar { height: 6px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-top: 5px; }
+  .bar > i { display: block; height: 100%; }
+
+  .notice { border-radius: 8px; padding: 12px; font-size: 14px; margin-bottom: 8px; border: 1px solid; }
+  .notice.warn { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn-text); }
+  .notice.info { background: #f1f5f9; border-color: var(--line-strong); color: #334155; }
+  .disclaimer { font-size: 12px; color: var(--muted); margin-top: 12px; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>프로필 및 목표 설정</h1>
+  <p class="sub">여기서 정한 기본 목표 칼로리가 식단 기록과 추천의 기준이 됩니다. <strong>F1</strong> · 기능명세서 기준</p>
+
+  <form id="form" novalidate>
+    <!-- 신체 정보 -->
+    <div class="card">
+      <h2>신체 정보</h2>
+
+      <fieldset>
+        <legend>성별</legend>
+        <div class="segmented seg2" id="sexGroup">
+          <label data-v="male"><input type="radio" name="sex" value="male">남성</label>
+          <label data-v="female"><input type="radio" name="sex" value="female">여성</label>
+        </div>
+        <p class="err hidden" data-err="sex"></p>
+      </fieldset>
+
+      <label class="field">
+        <span class="lbl">나이</span>
+        <span class="inputrow"><input type="number" id="age" min="10" max="100" step="1" placeholder="30" inputmode="numeric"><span class="unit">세</span></span>
+        <p class="err hidden" data-err="age"></p>
+      </label>
+
+      <label class="field">
+        <span class="lbl">키</span>
+        <span class="inputrow"><input type="number" id="height" min="100" max="250" step="0.1" placeholder="175" inputmode="decimal"><span class="unit">cm</span></span>
+        <p class="err hidden" data-err="height"></p>
+      </label>
+
+      <label class="field" style="margin-bottom:0">
+        <span class="lbl">몸무게</span>
+        <span class="inputrow"><input type="number" id="weight" min="30" max="300" step="0.1" placeholder="75" inputmode="decimal"><span class="unit">kg</span></span>
+        <p class="err hidden" data-err="weight"></p>
+      </label>
+    </div>
+
+    <!-- 활동 수준 -->
+    <div class="card">
+      <fieldset style="margin:0">
+        <legend>활동 수준</legend>
+        <p class="hint">운동은 따로 기록하니 여기서는 빼고 골라주세요.</p>
+        <div class="radios" id="activityGroup"></div>
+        <p class="err hidden" data-err="activity"></p>
+      </fieldset>
+    </div>
+
+    <!-- 식단 목표 -->
+    <div class="card">
+      <fieldset style="margin:0">
+        <legend>식단 목표</legend>
+        <div class="segmented seg3" id="goalGroup">
+          <label data-v="lose"><input type="radio" name="goal" value="lose" checked>다이어트</label>
+          <label data-v="maintain"><input type="radio" name="goal" value="maintain">유지</label>
+          <label data-v="gain"><input type="radio" name="goal" value="gain">증량</label>
+        </div>
+      </fieldset>
+
+      <div id="goalDetails" style="margin-top:16px;border-top:1px solid #f1f5f9;padding-top:16px">
+        <label class="field">
+          <span class="lbl">목표 체중</span>
+          <span class="inputrow"><input type="number" id="targetWeight" min="30" max="300" step="0.1" placeholder="70" inputmode="decimal"><span class="unit">kg</span></span>
+          <p class="err hidden" data-err="targetWeight"></p>
+        </label>
+
+        <div>
+          <span class="lbl" style="font-size:14px;color:#475569">목표 기간</span>
+          <p class="hint-muted">둘 중 하나만 입력하면 나머지는 자동으로 환산됩니다.</p>
+          <div class="grid2" style="margin-top:8px">
+            <label>
+              <span style="font-size:12px;color:var(--muted)">주 수</span>
+              <span class="inputrow"><input type="number" id="weeks" min="1" step="1" placeholder="12" inputmode="decimal"><span class="unit">주</span></span>
+            </label>
+            <label>
+              <span style="font-size:12px;color:var(--muted)">목표 날짜</span>
+              <span class="inputrow"><input type="date" id="targetDate"></span>
+            </label>
+          </div>
+          <p class="hint-muted tabular" id="daysNote"></p>
+          <p class="err hidden" data-err="period"></p>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="primary" id="submitBtn" disabled>계산하기</button>
+    <p class="center-note" id="submitNote">필수 항목을 모두 입력하면 계산할 수 있어요.</p>
+  </form>
+
+  <p class="notice info hidden" id="changeNotice" style="margin-top:20px"></p>
+
+  <div id="results" class="hidden" style="margin-top:20px">
+    <div class="card">
+      <h2>계산 과정</h2>
+      <ul class="steps">
+        <li><span class="k">기초대사량 <small>BMR</small></span><span class="v" id="oBmr"></span></li>
+        <li><span class="k">하루 소비량 <small>TDEE · 일상 활동 포함, 운동 제외</small></span><span class="v" id="oTdee"></span></li>
+        <li id="rowAdjust"><span class="k">목표에 따른 조정 <small id="oAdjustCalc"></small></span><span class="v" id="oAdjust"></span></li>
+        <li class="total"><span class="k">기본 목표 칼로리</span><span class="v" id="oTarget"></span></li>
+      </ul>
+      <p class="disclaimer" style="border-top:1px solid #f1f5f9;padding-top:12px">운동을 하면 그만큼 오늘 목표가 늘어납니다. 운동 기록은 F3에서 추가될 예정입니다.</p>
+    </div>
+
+    <div class="card hidden" id="goalCard">
+      <h2>목표</h2>
+      <p id="oGoalSentence" style="margin:0"></p>
+      <dl class="kv">
+        <div><dt>주당 예상 변화</dt><dd id="oRate"></dd></div>
+        <div><dt>목표 달성 예정일</dt><dd id="oDate"></dd></div>
+        <div><dt>현재 → 목표</dt><dd id="oWeights"></dd></div>
+        <div><dt>남은 기간</dt><dd id="oRemain"></dd></div>
+      </dl>
+    </div>
+
+    <div class="card">
+      <h2>목표 영양소</h2>
+      <div class="macro"><div class="top"><span class="nm">탄수화물</span><span class="g" id="oCarb"></span></div><div class="bar"><i id="bCarb" style="background:#fbbf24"></i></div></div>
+      <div class="macro"><div class="top"><span class="nm">단백질</span><span class="g" id="oProt"></span></div><div class="bar"><i id="bProt" style="background:#fb7185"></i></div></div>
+      <div class="macro"><div class="top"><span class="nm">지방</span><span class="g" id="oFat"></span></div><div class="bar"><i id="bFat" style="background:#38bdf8"></i></div></div>
+      <p class="notice info hidden" id="floorNote" style="margin:12px 0 0;font-size:13px"></p>
+    </div>
+
+    <div id="notices"></div>
+    <p class="disclaimer">임신·수유 중이거나 질환이 있다면 이 계산식이 맞지 않을 수 있어요. 전문가와 상의해주세요.</p>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* ────────────────────────────────────────────────────────────────
+   기능명세서 §F1 계산 로직 (단독 실행판)
+
+   ⚠️ 반올림 시점이 결과를 바꾼다.
+      명세서 예시 ㉮는 TDEE와 일일 조정량을 각각 반올림한 뒤 빼서 1,581을 얻는다.
+        round(2038.5) − round(458.33) = 2039 − 458 = 1581  ✓
+        round(2038.5 − 458.33)        = 1580              ✗
+   ⚠️ 기본 목표 칼로리는 어떤 경우에도 보정하지 않는다.
+      BMR보다 낮아도, 0 이하여도 계산값 그대로 보여주고 안내만 한다 (§F1 ③).
+   ──────────────────────────────────────────────────────────────── */
+
+var ACTIVITY = [
+  { id: 'sedentary',  factor: 1.2,   label: '주로 앉아서 생활 (사무직, 재택근무)' },
+  { id: 'light',      factor: 1.375, label: '서서 일하거나 자주 걸음 (교사, 판매직)' },
+  { id: 'active',     factor: 1.55,  label: '하루 대부분 서거나 걷는 직업 (간호사, 요식업)' },
+  { id: 'veryActive', factor: 1.725, label: '육체노동 (건설, 물류, 농업)' }
+];
+var KCAL_PER_KG = 7700;
+var RATIOS = {
+  lose:     { carbs: 0.40, protein: 0.30, fat: 0.30 },
+  maintain: { carbs: 0.50, protein: 0.20, fat: 0.30 },
+  gain:     { carbs: 0.50, protein: 0.25, fat: 0.25 }
+};
+var KPG = { carbs: 4, protein: 4, fat: 9 };
+var PROTEIN_FLOOR = { normal: 1.2, strength: 1.6 };
+var GOAL_LABEL = { lose: '다이어트', maintain: '유지', gain: '증량' };
+var STORAGE_KEY = 'diet-app:profile:v1';
+var MS_DAY = 86400000;
+
+/* ── 날짜 (UTC 자정 기준 — 타임존으로 하루 밀리는 것 방지) ── */
+function todayISO() {
+  var d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+}
+function parseISO(s) {
+  var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || '');
+  if (!m) return null;
+  var d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  if (d.getUTCFullYear() !== +m[1] || d.getUTCMonth() !== +m[2] - 1 || d.getUTCDate() !== +m[3]) return null;
+  return d;
+}
+function addDays(iso, n) {
+  var b = parseISO(iso); if (!b) return null;
+  var d = new Date(b.getTime() + n * MS_DAY);
+  return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
+}
+function daysBetween(a, b) {
+  var x = parseISO(a), y = parseISO(b);
+  if (!x || !y) return null;
+  return Math.round((y.getTime() - x.getTime()) / MS_DAY);
+}
+function formatDateK(iso) {
+  var p = iso.split('-');
+  return p[0] + '년 ' + (+p[1]) + '월 ' + (+p[2]) + '일';
+}
+
+/* ── 계산 ── */
+function calcBMR(p) {
+  var base = 10 * p.weightKg + 6.25 * p.heightCm - 5 * p.age;
+  return p.sex === 'male' ? base + 5 : base - 161;   // 반올림하지 않는다
+}
+function calcTDEE(bmr, activityId) {
+  var a = ACTIVITY.find(function (x) { return x.id === activityId; });
+  return Math.round(bmr * a.factor);                 // 여기서 반올림
+}
+function calcDailyAdjustment(currentKg, targetKg, days) {
+  if (!days || days <= 0) return 0;
+  return Math.round(Math.abs(targetKg - currentKg) * KCAL_PER_KG / days);
+}
+function calcWeeklyRate(currentKg, targetKg, days) {
+  if (!days || days <= 0) return 0;
+  return Math.round((Math.abs(targetKg - currentKg) / (days / 7)) * 100) / 100;
+}
+function calcMacros(targetCalories, goal, weightKg, strength) {
+  var r = RATIOS[goal], notices = [];
+  var carbs = Math.round(targetCalories * r.carbs / KPG.carbs);
+  var protein = Math.round(targetCalories * r.protein / KPG.protein);
+  var fat = Math.round(targetCalories * r.fat / KPG.fat);
+
+  var floor = Math.round(weightKg * (strength ? PROTEIN_FLOOR.strength : PROTEIN_FLOOR.normal));
+  var applied = false;
+  if (protein < floor) {
+    carbs -= (floor - protein);   // 올린 그램 수만큼 탄수에서 뺀다 (둘 다 4kcal/g)
+    protein = floor;
+    applied = true;
+  }
+  if (carbs < 0) { carbs = 0; notices.push('proteinFloorExceedsBudget'); }
+
+  return { carbsG: carbs, proteinG: protein, fatG: fat, floorApplied: applied, floorG: floor, notices: notices };
+}
+
+function calcAllTargets(profile, opts) {
+  opts = opts || {};
+  var today = opts.today || todayISO();
+  var strength = !!opts.hasStrengthTraining;
+  var notices = [];
+
+  var bmr = calcBMR(profile);
+  var tdee = calcTDEE(bmr, profile.activityLevel);
+
+  var hasGoal = profile.dietGoal !== 'maintain' && profile.targetWeightKg != null &&
+                profile.goalDurationDays != null && profile.goalDurationDays > 0;
+  var sameWeight = hasGoal && profile.targetWeightKg === profile.weightKg;
+  if (sameWeight) notices.push('goalWeightEqualsCurrent');
+
+  var effective = (!hasGoal || sameWeight) ? 'maintain' : profile.dietGoal;
+
+  if (effective === 'maintain') {
+    var m0 = calcMacros(tdee, 'maintain', profile.weightKg, strength);
+    if (tdee < bmr) notices.push('belowBmr');
+    if (tdee <= 0) notices.push('nonPositiveTarget');
+    return {
+      bmr: bmr, tdee: tdee, dailyAdjustmentKcal: 0, baseTargetCalories: tdee,
+      effectiveGoal: 'maintain', weeklyRateKg: null, targetDate: null, remainingDays: null,
+      macros: m0, notices: notices.concat(m0.notices)
+    };
+  }
+
+  var targetDate = addDays(profile.goalStartDate, profile.goalDurationDays);
+  var raw = targetDate ? daysBetween(today, targetDate) : null;
+  var remaining = raw == null ? null : Math.max(0, raw);
+  var ended = remaining != null && remaining <= 0;
+  if (ended) notices.push('goalPeriodEnded');
+
+  // 몸무게를 갱신하면 남은 기간으로 다시 나눈다 (§F1 예외).
+  // 기간이 지났으면 0으로 나눌 수 없으므로 원래 기간으로 값을 고정한다.
+  var denom = (remaining != null && remaining > 0) ? remaining : profile.goalDurationDays;
+
+  var adjust = calcDailyAdjustment(profile.weightKg, profile.targetWeightKg, denom);
+  var target = effective === 'lose' ? tdee - adjust : tdee + adjust;   // 보정 없음
+
+  if (target < bmr) notices.push('belowBmr');
+  if (target <= 0) notices.push('nonPositiveTarget');
+
+  var m = calcMacros(target, effective, profile.weightKg, strength);
+
+  return {
+    bmr: bmr, tdee: tdee, dailyAdjustmentKcal: adjust, baseTargetCalories: target,
+    effectiveGoal: effective,
+    weeklyRateKg: calcWeeklyRate(profile.weightKg, profile.targetWeightKg, denom),
+    targetDate: targetDate, remainingDays: remaining,
+    macros: m, notices: notices.concat(m.notices)
+  };
+}
+
+/* ────────────────────────────── 화면 ────────────────────────────── */
+var $ = function (id) { return document.getElementById(id); };
+var kcal = function (n) { return Math.round(n).toLocaleString('ko-KR') + ' kcal'; };
+
+var state = { durationDays: null, goalStartDate: todayISO(), saved: null };
+
+/* 활동 수준 라디오 생성 */
+$('activityGroup').innerHTML = ACTIVITY.map(function (a) {
+  return '<label data-v="' + a.id + '"><input type="radio" name="activity" value="' + a.id + '">' +
+         '<span><span class="nm">' + a.label + '</span><span class="fx">활동계수 ×' + a.factor + '</span></span></label>';
+}).join('');
+
+/* 선택 하이라이트 */
+function wireGroup(containerId, name) {
+  var c = $(containerId);
+  c.addEventListener('change', function () { paint(); validate(); });
+  function paint() {
+    Array.prototype.forEach.call(c.querySelectorAll('label'), function (l) {
+      var input = l.querySelector('input');
+      l.classList.toggle('on', input.checked);
+    });
+  }
+  c.__paint = paint;
+  paint();
+}
+wireGroup('sexGroup', 'sex');
+wireGroup('activityGroup', 'activity');
+wireGroup('goalGroup', 'goal');
+
+function checked(name) {
+  var el = document.querySelector('input[name="' + name + '"]:checked');
+  return el ? el.value : '';
+}
+function numOrNull(el) {
+  var v = el.value.trim();
+  if (v === '') return null;
+  var n = Number(v);
+  return isFinite(n) ? n : null;
+}
+
+/* 목표 기간: 주 수 ↔ 날짜 양방향 */
+function setDuration(days, source) {
+  state.durationDays = days;
+  if (source !== 'weeks') $('weeks').value = days == null ? '' : String(Math.round(days / 7 * 10) / 10);
+  if (source !== 'date')  $('targetDate').value = days == null ? '' : (addDays(state.goalStartDate, days) || '');
+  $('daysNote').textContent = days == null ? '' : '총 ' + days + '일';
+  validate();
+}
+$('weeks').addEventListener('input', function () {
+  var n = Number(this.value);
+  if (this.value.trim() === '' || !isFinite(n) || n <= 0) setDuration(null, 'weeks');
+  else setDuration(Math.round(n * 7), 'weeks');
+});
+$('targetDate').addEventListener('input', function () {
+  var d = daysBetween(state.goalStartDate, this.value);
+  if (d == null || d <= 0) setDuration(null, 'date');
+  else setDuration(d, 'date');
+});
+
+/* 목표 유지 선택 시 목표 체중·기간 숨김 */
+$('goalGroup').addEventListener('change', function () {
+  $('goalDetails').classList.toggle('hidden', checked('goal') === 'maintain');
+  validate();
+});
+
+['age', 'height', 'weight', 'targetWeight'].forEach(function (id) {
+  $(id).addEventListener('input', validate);
+});
+
+function showErr(key, msg) {
+  var el = document.querySelector('[data-err="' + key + '"]');
+  if (!el) return;
+  el.textContent = msg || '';
+  el.classList.toggle('hidden', !msg);
+}
+
+/* 검증 — 명세서 §F1 "예외 및 제약" */
+function collect() {
+  var goal = checked('goal');
+  var maintain = goal === 'maintain';
+  return {
+    sex: checked('sex'),
+    age: numOrNull($('age')),
+    heightCm: numOrNull($('height')),
+    weightKg: numOrNull($('weight')),
+    activityLevel: checked('activity'),
+    dietGoal: goal,
+    targetWeightKg: maintain ? null : numOrNull($('targetWeight')),
+    goalDurationDays: maintain ? null : state.durationDays,
+    goalStartDate: state.goalStartDate
+  };
+}
+function problems(p, loud) {
+  var e = {};
+  if (!p.sex) e.sex = '성별을 선택해주세요.';
+  if (p.age == null) e.age = '나이를 입력해주세요.';
+  else if (!Number.isInteger(p.age)) e.age = '나이는 정수로 입력해주세요.';
+  else if (p.age < 10 || p.age > 100) e.age = '나이는 10~100세 사이여야 해요.';
+  if (p.heightCm == null) e.height = '키를 입력해주세요.';
+  else if (p.heightCm < 100 || p.heightCm > 250) e.height = '키는 100~250cm 사이여야 해요.';
+  if (p.weightKg == null) e.weight = '몸무게를 입력해주세요.';
+  else if (p.weightKg < 30 || p.weightKg > 300) e.weight = '몸무게는 30~300kg 사이여야 해요.';
+  if (!p.activityLevel) e.activity = '활동 수준을 선택해주세요.';
+  if (p.dietGoal !== 'maintain') {
+    if (p.targetWeightKg == null) e.targetWeight = '목표 체중을 입력해주세요.';
+    else if (p.targetWeightKg < 30 || p.targetWeightKg > 300) e.targetWeight = '목표 체중은 30~300kg 사이여야 해요.';
+    if (p.goalDurationDays == null) e.period = '목표 기간을 입력해주세요.';
+  }
+  if (loud) { ['sex','age','height','weight','activity','targetWeight','period'].forEach(function (k) { showErr(k, e[k]); }); }
+  return e;
+}
+function validate() {
+  var p = collect();
+  var ok = Object.keys(problems(p, false)).length === 0;
+  $('submitBtn').disabled = !ok;
+  $('submitNote').classList.toggle('hidden', ok);
+  return ok;
+}
+
+/* 결과 렌더 */
+function render(profile, t) {
+  $('results').classList.remove('hidden');
+
+  $('oBmr').textContent = kcal(t.bmr);
+  $('oTdee').textContent = kcal(t.tdee);
+  $('oTarget').textContent = kcal(t.baseTargetCalories);
+
+  var isMaintain = t.effectiveGoal === 'maintain';
+  $('rowAdjust').classList.toggle('hidden', isMaintain);
+  $('goalCard').classList.toggle('hidden', isMaintain);
+
+  if (!isMaintain) {
+    var change = Math.abs(profile.targetWeightKg - profile.weightKg);
+    var denom = (t.remainingDays != null && t.remainingDays > 0) ? t.remainingDays : profile.goalDurationDays;
+    var weeks = Math.round(denom / 7 * 10) / 10;
+    var sign = t.effectiveGoal === 'lose' ? '−' : '+';
+
+    $('oAdjustCalc').textContent = change + 'kg × 7,700 kcal ÷ ' + denom + '일';
+    $('oAdjust').textContent = sign + t.dailyAdjustmentKcal.toLocaleString('ko-KR') + ' kcal';
+    $('oGoalSentence').innerHTML = change + 'kg을 ' + weeks + '주에 ' +
+      (t.effectiveGoal === 'lose' ? '빼려면' : '늘리려면') + ' 하루 <strong class="tabular">' +
+      t.dailyAdjustmentKcal.toLocaleString('ko-KR') + ' kcal</strong>를 ' +
+      (t.effectiveGoal === 'lose' ? '덜' : '더') + ' 드셔야 해요.';
+    $('oRate').textContent = t.weeklyRateKg + ' kg/주';
+    $('oDate').textContent = t.targetDate ? formatDateK(t.targetDate) : '—';
+    $('oWeights').textContent = profile.weightKg + 'kg → ' + profile.targetWeightKg + 'kg';
+    $('oRemain').textContent = t.remainingDays != null ? t.remainingDays + '일' : '—';
+  }
+
+  var m = t.macros;
+  var cc = m.carbsG * KPG.carbs, pc = m.proteinG * KPG.protein, fc = m.fatG * KPG.fat;
+  var sum = cc + pc + fc || 1;
+  $('oCarb').innerHTML = m.carbsG + ' g<span class="kc">' + cc.toLocaleString('ko-KR') + ' kcal</span>';
+  $('oProt').innerHTML = m.proteinG + ' g<span class="kc">' + pc.toLocaleString('ko-KR') + ' kcal</span>';
+  $('oFat').innerHTML  = m.fatG + ' g<span class="kc">' + fc.toLocaleString('ko-KR') + ' kcal</span>';
+  $('bCarb').style.width = (cc / sum * 100) + '%';
+  $('bProt').style.width = (pc / sum * 100) + '%';
+  $('bFat').style.width  = (fc / sum * 100) + '%';
+
+  $('floorNote').classList.toggle('hidden', !m.floorApplied);
+  if (m.floorApplied) {
+    $('floorNote').textContent = '단백질이 하한(' + m.floorG + 'g)에 못 미쳐 하한값으로 올렸고, 올린 만큼 탄수화물에서 뺐어요. 감량 중 근손실을 막기 위한 조정입니다.';
+  }
+
+  var MSG = {
+    belowBmr: { tone: 'warn', text: '이 목표는 기초대사량(' + kcal(t.bmr) + ')보다 낮아요. 기간을 늘리거나 운동을 병행하는 걸 고려해보세요.' },
+    nonPositiveTarget: { tone: 'warn', text: '목표 칼로리가 0 이하로 계산됐어요. 목표 체중과 기간을 다시 확인해주세요.' },
+    goalWeightEqualsCurrent: { tone: 'info', text: '목표 체중이 현재 체중과 같아 유지 목표로 계산했어요.' },
+    goalPeriodEnded: { tone: 'warn', text: '목표 기간이 지났어요. 달성 여부를 확인하고 새 목표를 설정해주세요. 그전까지는 기존 목표 칼로리를 그대로 사용합니다.' },
+    proteinFloorExceedsBudget: { tone: 'warn', text: '단백질 하한이 목표 칼로리를 넘어서 탄수화물이 0g으로 계산됐어요.' }
+  };
+  $('notices').innerHTML = t.notices.map(function (n) {
+    var m2 = MSG[n]; if (!m2) return '';
+    return '<p class="notice ' + m2.tone + '">' + m2.text + '</p>';
+  }).join('');
+
+  $('submitBtn').textContent = '다시 계산하기';
+}
+
+/* 제출 */
+$('form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var p = collect();
+  if (Object.keys(problems(p, true)).length > 0) return;
+
+  var t = calcAllTargets(p);
+
+  // 변경 사실 알림 — 명세서 §F1 예외
+  var note = $('changeNotice');
+  if (state.saved) {
+    var prev = calcAllTargets(state.saved), ch = [];
+    if (state.saved.weightKg !== p.weightKg) ch.push('몸무게 ' + state.saved.weightKg + ' → ' + p.weightKg + 'kg');
+    if (state.saved.targetWeightKg !== p.targetWeightKg) ch.push('목표 체중 ' + (state.saved.targetWeightKg == null ? '없음' : state.saved.targetWeightKg) + ' → ' + (p.targetWeightKg == null ? '없음' : p.targetWeightKg) + 'kg');
+    if (state.saved.goalDurationDays !== p.goalDurationDays) ch.push('목표 기간 ' + (state.saved.goalDurationDays == null ? '없음' : state.saved.goalDurationDays) + ' → ' + (p.goalDurationDays == null ? '없음' : p.goalDurationDays) + '일');
+    if (state.saved.dietGoal !== p.dietGoal) ch.push('목표 ' + GOAL_LABEL[state.saved.dietGoal] + ' → ' + GOAL_LABEL[p.dietGoal]);
+
+    if (ch.length && prev.baseTargetCalories !== t.baseTargetCalories) {
+      note.textContent = ch.join(', ') + '(으)로 바뀌어 기본 목표 칼로리를 ' +
+        prev.baseTargetCalories.toLocaleString('ko-KR') + ' → ' + t.baseTargetCalories.toLocaleString('ko-KR') + ' kcal로 다시 계산했어요.';
+      note.classList.remove('hidden');
+    } else if (ch.length) {
+      note.textContent = ch.join(', ') + '(으)로 수정했어요.';
+      note.classList.remove('hidden');
+    } else { note.classList.add('hidden'); }
+  } else { note.classList.add('hidden'); }
+
+  // 목표 자체를 바꾸면 새 목표로 보고 시작일을 오늘로 되돌린다.
+  // 몸무게만 바꿨다면 기존 시작일을 유지해야 남은 기간 기준 재계산이 성립한다.
+  state.saved = p;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch (err) {}
+
+  render(p, t);
+});
+
+/* 저장된 값 복원 */
+(function restore() {
+  var raw = null;
+  try { raw = localStorage.getItem(STORAGE_KEY); } catch (err) {}
+  if (!raw) { validate(); return; }
+  var p;
+  try { p = JSON.parse(raw); } catch (err) { validate(); return; }
+  if (!p || typeof p !== 'object') { validate(); return; }
+
+  var r = document.querySelector('input[name="sex"][value="' + p.sex + '"]'); if (r) r.checked = true;
+  $('age').value = p.age != null ? p.age : '';
+  $('height').value = p.heightCm != null ? p.heightCm : '';
+  $('weight').value = p.weightKg != null ? p.weightKg : '';
+  var a = document.querySelector('input[name="activity"][value="' + p.activityLevel + '"]'); if (a) a.checked = true;
+  var g = document.querySelector('input[name="goal"][value="' + p.dietGoal + '"]'); if (g) g.checked = true;
+  $('goalDetails').classList.toggle('hidden', p.dietGoal === 'maintain');
+  $('targetWeight').value = p.targetWeightKg != null ? p.targetWeightKg : '';
+  state.goalStartDate = p.goalStartDate || todayISO();
+  setDuration(p.goalDurationDays != null ? p.goalDurationDays : null, null);
+
+  $('sexGroup').__paint(); $('activityGroup').__paint(); $('goalGroup').__paint();
+
+  if (Object.keys(problems(p, false)).length === 0) {
+    state.saved = p;
+    render(p, calcAllTargets(p));
+  }
+  validate();
+})();
+
+/* ── 자체 점검: 명세서 계산 예시 ㉮·㉯ (콘솔에서 확인 가능) ── */
+(function selfTest() {
+  var base = { sex: 'male', age: 30, heightCm: 175, weightKg: 75, activityLevel: 'sedentary',
+               dietGoal: 'lose', targetWeightKg: 70, goalDurationDays: 84, goalStartDate: '2026-01-15' };
+  var t = calcAllTargets(base, { today: '2026-01-15' });
+  var g = calcAllTargets(Object.assign({}, base, { dietGoal: 'gain', targetWeightKg: 78, goalDurationDays: 112 }), { today: '2026-01-15' });
+  var s = calcAllTargets(base, { today: '2026-01-15', hasStrengthTraining: true });
+  var cases = [
+    ['BMR 1698.75', t.bmr, 1698.75], ['TDEE 2039', t.tdee, 2039],
+    ['조정량 458', t.dailyAdjustmentKcal, 458], ['기본목표 1581', t.baseTargetCalories, 1581],
+    ['주당 0.42', t.weeklyRateKg, 0.42], ['탄수 158', t.macros.carbsG, 158],
+    ['단백 119', t.macros.proteinG, 119], ['지방 53', t.macros.fatG, 53],
+    ['근력일 단백 120', s.macros.proteinG, 120], ['근력일 탄수 157', s.macros.carbsG, 157],
+    ['증량 조정량 206', g.dailyAdjustmentKcal, 206], ['증량 목표 2245', g.baseTargetCalories, 2245],
+    ['증량 주당 0.19', g.weeklyRateKg, 0.19]
+  ];
+  var bad = cases.filter(function (c) { return c[1] !== c[2]; });
+  window.__F1_SELFTEST__ = { total: cases.length, failed: bad };
+  if (bad.length) console.error('명세서 예시 재현 실패:', bad);
+  else console.log('명세서 계산 예시 ㉮·㉯ 재현: ' + cases.length + '/' + cases.length + ' 통과');
+})();
+</script>
+</body>
+</html>
