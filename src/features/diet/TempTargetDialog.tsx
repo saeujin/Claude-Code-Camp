@@ -9,6 +9,7 @@
 import { useState } from 'react'
 import type { DailyTarget } from '../../domain/types'
 import { SAMPLE_TARGET } from '../target/dailyTarget'
+import { Field } from './Field'
 
 type Props = {
   current: DailyTarget | null
@@ -84,25 +85,23 @@ export function TempTargetDialog({ current, onSave, onClose }: Props) {
             명세 F1 예시값 채우기 (1,581 kcal)
           </button>
 
-          <label className="field">
-            <span>오늘 목표 칼로리 (kcal)</span>
+          <Field label="오늘 목표 칼로리 (kcal)">
             <input
               type="number"
               className="text-input"
               inputMode="decimal"
               min={0}
-              step={10}
+              step="any"
               value={form.kcal}
               onChange={(event) => update('kcal', event.target.value)}
               autoFocus
             />
-          </label>
+          </Field>
 
           <fieldset className="macro-fields">
             <legend>목표 탄단지 (g) — 비우면 진행바를 표시하지 않습니다</legend>
             <div className="macro-row">
-              <label className="field">
-                <span>탄수화물</span>
+              <Field label="탄수화물">
                 <input
                   type="number"
                   className="text-input"
@@ -111,9 +110,8 @@ export function TempTargetDialog({ current, onSave, onClose }: Props) {
                   value={form.carb}
                   onChange={(event) => update('carb', event.target.value)}
                 />
-              </label>
-              <label className="field">
-                <span>단백질</span>
+              </Field>
+              <Field label="단백질">
                 <input
                   type="number"
                   className="text-input"
@@ -122,9 +120,8 @@ export function TempTargetDialog({ current, onSave, onClose }: Props) {
                   value={form.protein}
                   onChange={(event) => update('protein', event.target.value)}
                 />
-              </label>
-              <label className="field">
-                <span>지방</span>
+              </Field>
+              <Field label="지방">
                 <input
                   type="number"
                   className="text-input"
@@ -133,7 +130,7 @@ export function TempTargetDialog({ current, onSave, onClose }: Props) {
                   value={form.fat}
                   onChange={(event) => update('fat', event.target.value)}
                 />
-              </label>
+              </Field>
             </div>
           </fieldset>
 

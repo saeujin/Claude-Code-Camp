@@ -87,7 +87,7 @@ export function CustomFoodForm({ initialName, onSubmit, onCancel }: Props) {
           className="text-input"
           inputMode="decimal"
           min={0}
-          step={1}
+          step="any"
           value={input.kcal}
           onChange={(event) => update('kcal', event.target.value)}
           placeholder="필수"
@@ -104,7 +104,7 @@ export function CustomFoodForm({ initialName, onSubmit, onCancel }: Props) {
               className="text-input"
               inputMode="decimal"
               min={0}
-              step={0.1}
+              step="any"
               value={input.carb}
               onChange={(event) => update('carb', event.target.value)}
             />
@@ -115,7 +115,7 @@ export function CustomFoodForm({ initialName, onSubmit, onCancel }: Props) {
               className="text-input"
               inputMode="decimal"
               min={0}
-              step={0.1}
+              step="any"
               value={input.protein}
               onChange={(event) => update('protein', event.target.value)}
             />
@@ -126,7 +126,7 @@ export function CustomFoodForm({ initialName, onSubmit, onCancel }: Props) {
               className="text-input"
               inputMode="decimal"
               min={0}
-              step={0.1}
+              step="any"
               value={input.fat}
               onChange={(event) => update('fat', event.target.value)}
             />
@@ -140,7 +140,7 @@ export function CustomFoodForm({ initialName, onSubmit, onCancel }: Props) {
           className="text-input"
           inputMode="decimal"
           min={0}
-          step={10}
+          step="any"
           value={input.servingGram}
           onChange={(event) => update('servingGram', event.target.value)}
           placeholder="입력하면 '인분' 단위로 기록할 수 있어요"

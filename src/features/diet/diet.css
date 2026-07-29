@@ -439,13 +439,15 @@
 
 /* --- 폼 --------------------------------------------------------------- */
 
-.field {
+/* 오류 문구는 label 밖에 둔다 — 라벨 텍스트에 섞이면 안 된다 (Field.tsx 참고) */
+.field,
+.field-label {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
 
-.field > span {
+.field-label > span {
   font-size: 13px;
   color: var(--text-muted);
 }

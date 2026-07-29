@@ -13,6 +13,7 @@ import { filterFoodsByName } from '../../domain/foodSearch'
 import { validateAmount } from '../../domain/validation'
 import type { CustomFoodDraft } from '../../data/repo'
 import { CustomFoodForm } from './CustomFoodForm'
+import { Field } from './Field'
 
 type Props = {
   /** 검색 대상 — 개인 음식 + 기본 DB */
@@ -180,7 +181,8 @@ function AmountStep({ food, initialAmount, onBack, onSubmit }: AmountStepProps) 
         </span>
       </div>
 
-      <div className="unit-toggle" role="group" aria-label="섭취량 단위">
+      {/* aria-label에 '섭취량'을 쓰지 않는다 — 아래 입력 라벨과 겹쳐 구분이 안 된다 */}
+      <div className="unit-toggle" role="group" aria-label="단위 선택">
         <button
           type="button"
           className={unit === 'serving' ? 'active' : ''}
@@ -195,20 +197,18 @@ function AmountStep({ food, initialAmount, onBack, onSubmit }: AmountStepProps) 
         </button>
       </div>
 
-      <label className="field">
-        <span>섭취량 ({unit === 'g' ? 'g' : '인분'})</span>
+      <Field label={`섭취량 (${unit === 'g' ? 'g' : '인분'})`} error={errors.amount}>
         <input
           type="number"
           className="text-input"
           inputMode="decimal"
-          step={unit === 'g' ? 10 : 0.5}
+          step="any"
           min={0}
           value={value}
           onChange={(event) => setValue(event.target.value)}
           autoFocus
         />
-        {errors.amount && <span className="field-error">{errors.amount}</span>}
-      </label>
+      </Field>
 
       {preview && grams !== null && (
         <div className="preview">

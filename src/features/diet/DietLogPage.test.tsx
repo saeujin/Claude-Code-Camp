@@ -26,6 +26,13 @@ function summaryBar(): HTMLElement {
   return bar as HTMLElement
 }
 
+/** 열려 있는 시트. 기록 목록에 같은 이름이 있어도 시트 안만 보게 한다 */
+function sheet(): HTMLElement {
+  const el = document.querySelector('.sheet')
+  if (!el) throw new Error('열린 시트가 없습니다')
+  return el as HTMLElement
+}
+
 function consumedText(): string {
   return document.querySelector('.summary-consumed strong')?.textContent ?? ''
 }
@@ -44,7 +51,8 @@ async function addEntry(
 ) {
   await user.click(within(slotCard(slot)).getByRole('button', { name: `+ ${slot} 추가` }))
   await user.type(screen.getByPlaceholderText('음식 이름으로 검색'), query)
-  await user.click(screen.getByRole('button', { name: new RegExp(foodName) }))
+  // 검색 결과는 시트 안에서 고른다 — 이미 기록된 같은 음식의 행과 헷갈리지 않게
+  await user.click(within(sheet()).getByRole('button', { name: new RegExp(foodName) }))
 
   if (amount !== undefined) {
     const input = screen.getByLabelText(/섭취량/)
@@ -140,15 +148,20 @@ describe('DietLogPage', () => {
       expect(consumedText()).toContain('401')
     })
 
-    it('1인분 기준량이 없는 음식은 인분 단위를 고를 수 없다', async () => {
+    it('1인분 중량 없이 등록한 음식은 인분 단위를 고를 수 없다', async () => {
       render(<DietLogPage />)
 
+      // 씨드 음식은 전부 servingGram이 있으므로, 없는 음식을 직접 만들어야 한다
       await user.click(within(slotCard('점심')).getByRole('button', { name: '+ 점심 추가' }))
-      await user.type(screen.getByPlaceholderText('음식 이름으로 검색'), '올리브유')
-      await user.click(screen.getByRole('button', { name: /올리브유/ }))
+      await user.type(screen.getByPlaceholderText('음식 이름으로 검색'), '이름없는소스')
+      await user.click(screen.getByRole('button', { name: '직접 입력해서 추가' }))
+      await user.type(screen.getByLabelText('100g당 칼로리 (kcal)'), '250')
+      await user.click(screen.getByRole('button', { name: '개인 음식으로 저장' }))
 
-      // 씨드의 올리브유에는 servingGram이 있으므로 g 토글만 확인한다
-      expect(screen.getByRole('button', { name: 'g' })).toBeDefined()
+      expect(screen.getByRole('button', { name: '인분' })).toHaveProperty('disabled', true)
+      expect(screen.getByRole('button', { name: 'g' })).toHaveProperty('disabled', false)
+      // 기본 단위가 g으로 떨어져 있어야 한다
+      expect(screen.getByLabelText('섭취량 (g)')).toBeDefined()
     })
 
     it('섭취량이 0이면 저장 버튼이 잠긴다', async () => {
@@ -316,8 +329,9 @@ describe('DietLogPage', () => {
       await user.click(within(slotCard('간식')).getByRole('button', { name: '+ 간식 추가' }))
       await user.type(screen.getByPlaceholderText('음식 이름으로 검색'), '엄마')
 
-      expect(screen.getByRole('button', { name: /엄마 김치볶음밥/ })).toBeDefined()
-      expect(screen.getByText('직접 입력')).toBeDefined()
+      // 시트 안에서만 찾는다 — 점심 카드의 기록 행도 같은 이름을 갖고 있다
+      expect(within(sheet()).getByRole('button', { name: /엄마 김치볶음밥/ })).toBeDefined()
+      expect(within(sheet()).getByText('직접 입력')).toBeDefined()
     })
 
     it('칼로리를 비우면 저장할 수 없다', async () => {
