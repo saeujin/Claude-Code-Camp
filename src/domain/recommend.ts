@@ -95,6 +95,36 @@ export function remainingSlots(
   )
 }
 
+/**
+ * 시각대별 기본 끼니. 경계는 "그 시각 전까지"다.
+ *
+ * 아침 10시, 점심 15시, 저녁 21시로 끊고 그 뒤는 간식으로 둔다.
+ */
+const SLOT_BY_HOUR: readonly { readonly until: number; readonly slot: MealSlot }[] = [
+  { until: 10, slot: 'breakfast' },
+  { until: 15, slot: 'lunch' },
+  { until: 21, slot: 'dinner' },
+]
+
+/**
+ * 화면을 열었을 때 미리 골라 둘 끼니 (명세 334~335줄 — "현재 시각과 이미 기록된
+ * 끼니로 판단한다").
+ *
+ * 시각으로 후보를 정하고, 그 끼니에 이미 기록이 있으면 **뒤 순서에서 비어 있는
+ * 끼니로 넘긴다.** 점심을 다 먹고 화면을 열었을 때 점심을 다시 추천하는 것보다
+ * 저녁을 제안하는 편이 자연스럽다.
+ *
+ * 뒤가 전부 채워져 있으면 시각이 가리킨 끼니를 그대로 돌려준다 — 사용자가 그
+ * 끼니를 더 먹으려고 열었을 수 있고, 그 판단은 `remainingSlots`가 이미 하고 있다.
+ */
+export function defaultSlotFor(now: Date, loggedSlots: readonly MealSlot[]): MealSlot {
+  const hour = now.getHours()
+  const byClock = SLOT_BY_HOUR.find((rule) => hour < rule.until)?.slot ?? 'snack'
+
+  const from = MEAL_SLOTS.indexOf(byClock)
+  return MEAL_SLOTS.slice(from).find((slot) => !loggedSlots.includes(slot)) ?? byClock
+}
+
 // ---------------------------------------------------------------------------
 // ⑤ 후보 추림
 // ---------------------------------------------------------------------------

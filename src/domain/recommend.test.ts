@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { Nutrition, RecommendInput } from './types'
 import {
+  defaultSlotFor,
   formatServings,
   recommendNextMeal,
   remainingMacros,
@@ -86,6 +87,44 @@ describe('remainingSlots', () => {
 
   it('마지막 끼니는 자기 하나만 남는다', () => {
     expect(remainingSlots('snack', ['breakfast', 'lunch', 'dinner'])).toEqual(['snack'])
+  })
+})
+
+describe('defaultSlotFor', () => {
+  /** 그날 몇 시인지만 중요하다. 날짜는 고정해 둔다 */
+  const at = (hour: number) => new Date(2026, 6, 29, hour, 0, 0)
+
+  it('시각으로 끼니를 고른다', () => {
+    expect(defaultSlotFor(at(8), [])).toBe('breakfast')
+    expect(defaultSlotFor(at(12), [])).toBe('lunch')
+    expect(defaultSlotFor(at(19), [])).toBe('dinner')
+    expect(defaultSlotFor(at(23), [])).toBe('snack')
+  })
+
+  it('경계는 그 시각 전까지다', () => {
+    expect(defaultSlotFor(at(9), [])).toBe('breakfast')
+    expect(defaultSlotFor(at(10), [])).toBe('lunch')
+    expect(defaultSlotFor(at(14), [])).toBe('lunch')
+    expect(defaultSlotFor(at(15), [])).toBe('dinner')
+    expect(defaultSlotFor(at(20), [])).toBe('dinner')
+    expect(defaultSlotFor(at(21), [])).toBe('snack')
+  })
+
+  it('시각이 가리킨 끼니에 기록이 있으면 뒤의 빈 끼니로 넘긴다', () => {
+    // 점심을 먹고 오후 1시에 열었다 → 저녁을 제안한다
+    expect(defaultSlotFor(at(13), ['breakfast', 'lunch'])).toBe('dinner')
+  })
+
+  it('중간이 채워져 있으면 그다음 빈 끼니까지 넘어간다', () => {
+    expect(defaultSlotFor(at(13), ['lunch', 'dinner'])).toBe('snack')
+  })
+
+  it('뒤가 전부 채워져 있으면 시각이 가리킨 끼니를 그대로 쓴다', () => {
+    expect(defaultSlotFor(at(13), ['lunch', 'dinner', 'snack'])).toBe('lunch')
+  })
+
+  it('앞 끼니 기록은 판정에 영향을 주지 않는다', () => {
+    expect(defaultSlotFor(at(12), ['breakfast'])).toBe('lunch')
   })
 })
 
