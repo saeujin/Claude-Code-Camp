@@ -1,0 +1,35 @@
+/* 앱 셸 — 상단 탭 */
+
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  max-width: 480px;
+  margin: 0 auto;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.app-tab {
+  flex: 1;
+  padding: 14px 8px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.app-tab.active {
+  border-bottom-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* 탭이 sticky이므로 날짜 헤더는 그 아래에 붙는다 */
+.app-nav ~ .diet-page .date-header {
+  top: 49px;
+}

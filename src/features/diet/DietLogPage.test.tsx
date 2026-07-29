@@ -9,8 +9,26 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { UserEvent } from '@testing-library/user-event'
+import { todayKey } from '../../domain/date'
 import { DietLogPage } from './DietLogPage'
-import { SAMPLE_TARGET } from '../target/dailyTarget'
+import { saveProfile } from '../../data/profileRepo'
+import type { Profile } from '../../domain/types'
+
+/**
+ * 명세 계산 예시 ㉮의 프로필 — 남 30세 175cm 75kg 사무직, 목표 70kg · 12주.
+ * 여기서 나오는 기본 목표 1,581kcal이 F2 잔여 칼로리의 기준이 된다.
+ */
+const 예시_프로필: Profile = {
+  sex: 'male',
+  age: 30,
+  heightCm: 175,
+  weightKg: 75,
+  activityLevel: 'sedentary',
+  dietGoal: 'lose',
+  targetWeightKg: 70,
+  goalDurationDays: 84,
+  goalStartDate: todayKey(),
+}
 
 /** 끼니 카드를 라벨로 집어온다 */
 function slotCard(label: string): HTMLElement {
@@ -92,7 +110,7 @@ describe('DietLogPage', () => {
       render(<DietLogPage />)
 
       expect(remainingText()).toBeNull()
-      expect(within(summaryBar()).getByText(/목표 칼로리가 없어 잔여를 표시하지 못합니다/)).toBeDefined()
+      expect(within(summaryBar()).getByText(/프로필을 설정하면 목표 칼로리가 계산되어/)).toBeDefined()
     })
 
     it('목표가 없어도 기록은 가능하다 (명세 226줄)', async () => {
@@ -221,26 +239,25 @@ describe('DietLogPage', () => {
     })
   })
 
-  describe('잔여 칼로리', () => {
-    async function setSampleTarget() {
-      await user.click(screen.getByRole('button', { name: '임시 목표 설정' }))
-      await user.click(screen.getByRole('button', { name: /명세 F1 예시값/ }))
-      await user.click(screen.getByRole('button', { name: '목표 저장' }))
+  describe('잔여 칼로리 — F1 프로필에서 파생된다', () => {
+    /** F1이 목표를 만든다. F2는 계산하지 않고 읽기만 한다 */
+    function givenProfile() {
+      saveProfile(예시_프로필)
     }
 
-    it('목표를 설정하면 잔여 칼로리가 나타난다', async () => {
+    it('프로필이 있으면 잔여 칼로리가 나타난다', async () => {
+      givenProfile()
       render(<DietLogPage />)
       await addEntry(user, '아침', '쌀밥', '쌀밥')
-      await setSampleTarget()
 
-      // 1,581 − 300 = 1,281
+      // 기본 목표 1,581 − 쌀밥 300 = 1,281
       expect(remainingText()).toContain('1,281')
       expect(within(summaryBar()).getByText('잔여')).toBeDefined()
     })
 
     it('목표를 초과하면 음수로 보여주고 기록을 막지 않는다 (명세 225줄)', async () => {
+      givenProfile()
       render(<DietLogPage />)
-      await setSampleTarget()
       // 후라이드 치킨 200g × 2인분 = 400g × 2.54 = 1,016kcal, 두 번이면 2,032
       await addEntry(user, '저녁', '후라이드', '후라이드 치킨', '2')
       await addEntry(user, '간식', '후라이드', '후라이드 치킨', '2')
@@ -251,23 +268,28 @@ describe('DietLogPage', () => {
       expect(within(slotCard('저녁')).queryByText('기록 없음')).toBeNull()
     })
 
-    it('목표를 해제하면 잔여 칼로리가 다시 사라진다', async () => {
-      render(<DietLogPage />)
-      await setSampleTarget()
-      expect(remainingText()).not.toBeNull()
-
-      await user.click(screen.getByRole('button', { name: '목표 수정' }))
-      await user.click(screen.getByRole('button', { name: /목표 해제/ }))
+    it('프로필이 없으면 목표 설정 안내를 보여준다', () => {
+      render(<DietLogPage onGoToProfile={() => {}} />)
 
       expect(remainingText()).toBeNull()
+      expect(screen.getByRole('button', { name: '목표 설정하기' })).toBeDefined()
     })
 
-    it('목표 탄단지가 있으면 진행바 3개를 보여준다', async () => {
+    it('목표 탄단지 진행바 3개를 보여준다', () => {
+      givenProfile()
       render(<DietLogPage />)
-      await setSampleTarget()
 
+      // 예시 ㉮의 탄 158 / 단 119 / 지 53g
       expect(document.querySelectorAll('.macro-bar-track')).toHaveLength(3)
-      expect(SAMPLE_TARGET.carb).toBeGreaterThan(0)
+    })
+
+    it('목표 수정 버튼이 프로필 화면으로 보낸다', async () => {
+      givenProfile()
+      let navigated = false
+      render(<DietLogPage onGoToProfile={() => { navigated = true }} />)
+
+      await user.click(screen.getByRole('button', { name: '목표 수정' }))
+      expect(navigated).toBe(true)
     })
   })
 

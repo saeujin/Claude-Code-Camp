@@ -25,3 +25,21 @@ export function Field({ label, error, children }: Props) {
     </div>
   )
 }
+
+/**
+ * 버튼 묶음처럼 `<label>`로 감쌀 수 없는 입력용.
+ *
+ * `<label>`은 자기가 감싼 컨트롤의 접근명을 덮어쓴다. 버튼 여러 개를 label 안에
+ * 넣으면 버튼 이름이 전부 라벨 텍스트로 바뀌어 "남성"을 찾을 수 없게 된다.
+ * 그래서 여기서는 라벨을 평범한 `<span>`으로 두고, 묶음 자체는 감싸는 쪽에서
+ * `role="group"`과 `aria-label`로 설명한다.
+ */
+export function FieldGroup({ label, error, children }: Props) {
+  return (
+    <div className="field">
+      <span className="field-label-text">{label}</span>
+      {children}
+      {error && <span className="field-error">{error}</span>}
+    </div>
+  )
+}
